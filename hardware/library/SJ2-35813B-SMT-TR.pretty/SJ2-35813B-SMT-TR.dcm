@@ -1,0 +1,9 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP SJ2-35813B-SMT-TR
+D 3.50mm (0.141", 1/8", Mini Plug) - Headphone Phone Jack Stereo (3 Conductor, TRS) Connector Solder , 12VDC , 1 A , -25C ~ 85C
+K
+F https://www.sameskydevices.com/product/resource/sj2-3581x-smt.pdf
+$ENDCMP
+#
+#End Doc Library

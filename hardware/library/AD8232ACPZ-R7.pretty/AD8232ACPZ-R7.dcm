@@ -1,0 +1,9 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP AD8232ACPZ-R7
+D ANALOG DEVICES - AD8232ACPZ-R7 - SIGNAL CONDITIONER, ECG, LFCSP-20
+K
+F https://www.analog.com/media/jp/technical-documentation/data-sheets/AD8232_jp.pdf
+$ENDCMP
+#
+#End Doc Library

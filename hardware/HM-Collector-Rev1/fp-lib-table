@@ -1,0 +1,9 @@
+(fp_lib_table
+  (version 7)
+  (lib (name "AD8232ACPZ-R7")(type "KiCad")(uri "${KIPRJMOD}/../library/AD8232ACPZ-R7.pretty")(options "")(descr ""))
+  (lib (name "AT25SF128A-SHB-T")(type "KiCad")(uri "${KIPRJMOD}/../library/AT25SF128A-SHB-T.pretty")(options "")(descr ""))
+  (lib (name "CX3225FB16000D0FZZH1")(type "KiCad")(uri "${KIPRJMOD}/../library/CX3225FB16000D0FZZH1.pretty")(options "")(descr ""))
+  (lib (name "SJ2-35813B-SMT-TR")(type "KiCad")(uri "${KIPRJMOD}/../library/SJ2-35813B-SMT-TR.pretty")(options "")(descr ""))
+  (lib (name "ST1VAFE6AXTR")(type "KiCad")(uri "${KIPRJMOD}/../library/ST1VAFE6AXTR.pretty")(options "")(descr ""))
+  (lib (name "TPS7A2028PDBVR")(type "KiCad")(uri "${KIPRJMOD}/../library/TPS7A2028PDBVR.pretty")(options "")(descr ""))
+)

@@ -1,0 +1,9 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP CX3225FB16000D0FZZH1
+D Crystals 3.2x2.5mm 16MHz 8pF
+K
+F https://ele.kyocera.com/assets/products/crystal-device/specification/CX3225FB_8pF.pdf
+$ENDCMP
+#
+#End Doc Library
