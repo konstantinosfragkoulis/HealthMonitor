@@ -1,7 +1,7 @@
 # HealthMonitor
 > **Status: Work In Progress (Active Development)** 🚧
 
-![Health Monitor Rev2 PCB](assets/HM-Rev2.jpeg)
+![Health Monitor Rev2 PCB](images/HM-Rev2.jpeg)
 
 This repository contains the hardware and firmware for a custom, bare-metal biomedical wearable designed to capture synchronized Electrocardiogram (ECG) and Seismocardiogram (SCG) data.
 
