@@ -301,7 +301,7 @@
 			(unlocked yes)
 			(layer "F.Fab")
 			(hide yes)
-			(uuid "e9868593-2b7d-49cb-9782-a8622fdfb51b")
+			(uuid "b96766f9-033b-4691-b2d0-fbe8387c9cde")
 			(effects
 				(font
 					(size 1 1)
@@ -314,7 +314,7 @@
 			(unlocked yes)
 			(layer "F.Fab")
 			(hide yes)
-			(uuid "ef010fe1-89b1-49bf-a73b-84fd7934339b")
+			(uuid "5812ca53-d27d-460e-8412-dbcf13936a11")
 			(effects
 				(font
 					(size 1 1)
@@ -327,7 +327,7 @@
 			(unlocked yes)
 			(layer "F.Fab")
 			(hide yes)
-			(uuid "1c92d75d-f3e7-4151-8721-a9501ff778af")
+			(uuid "a203a07c-62ab-40cd-a766-9a43f51438cd")
 			(effects
 				(font
 					(size 1 1)
@@ -340,7 +340,7 @@
 			(unlocked yes)
 			(layer "F.Fab")
 			(hide yes)
-			(uuid "82a83608-3004-406c-a74e-6bb4d14c4d21")
+			(uuid "6d102913-43cd-48fd-ba34-96350f15863f")
 			(effects
 				(font
 					(size 1 1)
@@ -353,7 +353,7 @@
 			(unlocked yes)
 			(layer "F.Fab")
 			(hide yes)
-			(uuid "de9e400c-fef4-4db1-8269-441f32809cee")
+			(uuid "ace52b0d-405a-4f86-87e8-65603e5c161b")
 			(effects
 				(font
 					(size 1 1)
@@ -363,7 +363,7 @@
 		)
 		(path "/fa6c77ac-a6e6-4d3b-8b3b-15ee247ee9f0")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start 0.3 1.45)
@@ -373,7 +373,7 @@
 				(type solid)
 			)
 			(layer "F.SilkS")
-			(uuid "2d03f954-0305-47ff-8c49-fd52c97e3147")
+			(uuid "a614ac9c-b263-4101-a948-00090d0b5140")
 		)
 		(fp_line
 			(start 0.3 -1.45)
@@ -383,7 +383,7 @@
 				(type solid)
 			)
 			(layer "F.SilkS")
-			(uuid "3d0bce03-691a-46c5-9d21-6428c6190d5a")
+			(uuid "eb6adf55-e29b-4019-995d-ea06abd30902")
 		)
 		(fp_line
 			(start -0.3 1.45)
@@ -393,7 +393,7 @@
 				(type solid)
 			)
 			(layer "F.SilkS")
-			(uuid "90b72279-d1e5-4a7b-823e-abd0b7813c72")
+			(uuid "756b1e51-ffad-4dbf-bb2d-6dadb9fe54de")
 		)
 		(fp_line
 			(start -0.3 -1.45)
@@ -403,7 +403,7 @@
 				(type solid)
 			)
 			(layer "F.SilkS")
-			(uuid "f144b929-027b-4a03-9d9b-91d46e305a27")
+			(uuid "b5f0b040-10b1-40e3-8ebb-ab88c7636519")
 		)
 		(fp_line
 			(start -1.85 -1.5)
@@ -413,7 +413,7 @@
 				(type solid)
 			)
 			(layer "F.SilkS")
-			(uuid "4b3ab851-2e20-4b62-ac25-c3f840f68e8d")
+			(uuid "8534aeec-f9d2-467e-a791-fd8563087afb")
 		)
 		(fp_line
 			(start 2.1 1.775)
@@ -423,7 +423,7 @@
 				(type solid)
 			)
 			(layer "F.CrtYd")
-			(uuid "a88ef953-dc91-4289-9966-acaea7204651")
+			(uuid "819c9f41-99e5-4a40-9ff2-b6e0c6d0abe6")
 		)
 		(fp_line
 			(start 2.1 -1.775)
@@ -433,7 +433,7 @@
 				(type solid)
 			)
 			(layer "F.CrtYd")
-			(uuid "585b2c40-1a39-483a-9243-1f2e22589f84")
+			(uuid "6f580192-e051-49c3-b3f3-0d7d6dbdf181")
 		)
 		(fp_line
 			(start -2.1 1.775)
@@ -443,7 +443,7 @@
 				(type solid)
 			)
 			(layer "F.CrtYd")
-			(uuid "ca8500ab-1e55-4743-8955-bcc49f7aa900")
+			(uuid "6ed28f19-824e-40f4-a538-39b894936984")
 		)
 		(fp_line
 			(start -2.1 -1.775)
@@ -453,7 +453,7 @@
 				(type solid)
 			)
 			(layer "F.CrtYd")
-			(uuid "648b859e-2395-49a7-82e3-462de2d77791")
+			(uuid "1d00beeb-7d23-435e-8bb5-84abba5fa02a")
 		)
 		(fp_line
 			(start 0.8 1.45)
@@ -463,7 +463,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "fd99f311-8f5b-43ef-88f5-57df3d39cb74")
+			(uuid "2e021913-f73b-43e1-bf1b-b18d38694105")
 		)
 		(fp_line
 			(start 0.8 -1.45)
@@ -473,7 +473,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "9751e704-c7a7-4214-a59d-7e3df580c95b")
+			(uuid "e592e627-e665-485e-94e2-7f8ee761337e")
 		)
 		(fp_line
 			(start -0.8 1.45)
@@ -483,7 +483,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "b7e88251-3935-4618-b08e-883cffeb2261")
+			(uuid "74c5ab94-5f24-47d2-afd2-76a9275f0cb5")
 		)
 		(fp_line
 			(start -0.8 -0.5)
@@ -493,7 +493,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "f7587793-098e-4742-a236-e6b89077eff4")
+			(uuid "a687c7c9-af50-4e5b-98c3-3c0832a2612d")
 		)
 		(fp_line
 			(start -0.8 -1.45)
@@ -503,7 +503,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "7edb9532-68f4-4af3-997d-46f090aa4370")
+			(uuid "6b46c846-e252-4436-bdc0-4088828b99d1")
 		)
 		(fp_text user "${REFERENCE}"
 			(at 0 0 180)
@@ -630,7 +630,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/2691f8e5-1ac9-404e-866b-26d73cd8cded")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.261252 0.735)
@@ -830,7 +830,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/40d26111-c1ad-48b3-8524-56bd4af24c4c")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 -0.51)
@@ -1030,7 +1030,7 @@
 		(property ki_fp_filters "Pin* Test*")
 		(path "/9b0a2572-baff-42cb-80ad-9ff88326e6fd")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr through_hole)
 		(fp_line
 			(start -1.38 -1.38)
@@ -1274,7 +1274,7 @@
 		(property ki_fp_filters "Choke_* *Coil* Inductor_* L_*")
 		(path "/215be390-5efe-4887-b9dd-ffc938f3d285")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.261252 -1.11)
@@ -1476,7 +1476,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/0bef3f68-7a05-41b5-a74d-aa162d14309c")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.107836 0.36)
@@ -1678,7 +1678,7 @@
 		(property ki_fp_filters "SolderJumper*Open*")
 		(path "/eb29fd73-5f48-4fc7-843b-08503f5a4ccd")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(zone_connect 1)
 		(attr exclude_from_pos_files exclude_from_bom allow_soldermask_bridges)
 		(fp_rect
@@ -1848,7 +1848,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/8d39b5eb-14cd-46d6-bc34-b225a466efa6")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 0.51)
@@ -2050,7 +2050,7 @@
 			(unlocked yes)
 			(layer "F.Fab")
 			(hide yes)
-			(uuid "3c019acd-44be-4c9c-ab14-353d7851c7cc")
+			(uuid "3127190e-5a37-450f-938d-181f657bc3d6")
 			(effects
 				(font
 					(size 1 1)
@@ -2063,7 +2063,7 @@
 			(unlocked yes)
 			(layer "F.Fab")
 			(hide yes)
-			(uuid "f5f670d2-689c-4d3f-801d-247b4a69531e")
+			(uuid "928539f6-dcbe-4d99-9a8b-57ec5491bc31")
 			(effects
 				(font
 					(size 1 1)
@@ -2076,7 +2076,7 @@
 			(unlocked yes)
 			(layer "F.Fab")
 			(hide yes)
-			(uuid "fb5ba2b2-4fc2-480d-bb8b-69250222deb5")
+			(uuid "9b9b588d-5578-437d-8b06-65b38b204977")
 			(effects
 				(font
 					(size 1 1)
@@ -2089,7 +2089,7 @@
 			(unlocked yes)
 			(layer "F.Fab")
 			(hide yes)
-			(uuid "a3fae7b4-473d-4724-91bf-4e8c8176c39d")
+			(uuid "aeffd225-b753-4b2c-b8a7-cf28fdf9eb40")
 			(effects
 				(font
 					(size 1 1)
@@ -2102,7 +2102,7 @@
 			(unlocked yes)
 			(layer "F.Fab")
 			(hide yes)
-			(uuid "f6992e6a-f835-4e0d-a1ab-45a854803c4c")
+			(uuid "6c0b5749-dce9-4bbf-815d-19fbe7c21a0b")
 			(effects
 				(font
 					(size 1 1)
@@ -2112,7 +2112,7 @@
 		)
 		(path "/c8d4603a-09f3-49b5-9d3a-f99c05a0b51f")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_circle
 			(center -2.375 -1.75)
@@ -2123,7 +2123,7 @@
 			)
 			(fill no)
 			(layer "F.SilkS")
-			(uuid "590cd89a-7ab6-476a-851f-0d34dc6c9e35")
+			(uuid "eeb6dfb5-19ec-474c-84ab-2431d297a197")
 		)
 		(fp_line
 			(start 2.625 2.625)
@@ -2133,7 +2133,7 @@
 				(type solid)
 			)
 			(layer "F.CrtYd")
-			(uuid "16b49a99-e6ec-460b-822f-0b74dd853c20")
+			(uuid "8c8763e9-c653-435d-8fae-2b59781ea9a3")
 		)
 		(fp_line
 			(start 2.625 -2.625)
@@ -2143,7 +2143,7 @@
 				(type solid)
 			)
 			(layer "F.CrtYd")
-			(uuid "65abd0d3-ae70-496c-8c6d-62c871147864")
+			(uuid "6e6fa1c2-ebf6-49e5-96d3-33a70f37f5c3")
 		)
 		(fp_line
 			(start -2.625 2.625)
@@ -2153,7 +2153,7 @@
 				(type solid)
 			)
 			(layer "F.CrtYd")
-			(uuid "15ca6072-12ef-4b41-a8b7-ab377137a249")
+			(uuid "f455ed5f-2067-4d2e-9795-2d558f446e2d")
 		)
 		(fp_line
 			(start -2.625 -2.625)
@@ -2163,7 +2163,7 @@
 				(type solid)
 			)
 			(layer "F.CrtYd")
-			(uuid "72cffc3b-d683-4cb3-af07-4b9b88d31aef")
+			(uuid "b20d1a61-eadd-409e-80b3-5b273aba22a8")
 		)
 		(fp_line
 			(start 2 2)
@@ -2173,7 +2173,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "af66e537-7b54-4ef2-833f-7aad0b8cb91e")
+			(uuid "9f4a4295-f928-456a-9b50-2b250831d607")
 		)
 		(fp_line
 			(start 2 -2)
@@ -2183,7 +2183,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "a51f6cc1-bd84-4f3f-a517-1669ad9c6928")
+			(uuid "fb6846ba-e93a-4eac-8d86-23f629c23e2f")
 		)
 		(fp_line
 			(start -2 2)
@@ -2193,7 +2193,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "10835205-edf5-4715-873d-fc7dc7e05515")
+			(uuid "989e6680-2107-4e88-a9cb-c386a143123b")
 		)
 		(fp_line
 			(start -2 -1.5)
@@ -2203,7 +2203,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "f0c37473-e11a-44d1-800f-059cff495261")
+			(uuid "dbdbdc1e-b718-4426-bf92-9151594d2e02")
 		)
 		(fp_line
 			(start -2 -2)
@@ -2213,7 +2213,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "3aefbae4-5637-430b-903f-805c8730886f")
+			(uuid "c82445a0-3d07-45a2-b646-b5f74c749ae8")
 		)
 		(fp_text user "${REFERENCE}"
 			(at 0 0 180)
@@ -2484,7 +2484,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/5a92d006-6425-4b83-aa04-e74065998579")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.153641 0.38)
@@ -2684,7 +2684,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/94c93f10-885f-4934-8c6f-dbf145a64719")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.107836 0.36)
@@ -2884,7 +2884,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/4f41f9fc-cd52-4a00-a1d9-0f82e60c74d8")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 -0.51)
@@ -3084,7 +3084,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/e657d683-6bda-4f55-b865-998fe70ec241")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.237258 -0.5225)
@@ -3286,7 +3286,7 @@
 			(unlocked yes)
 			(layer "F.Fab")
 			(hide yes)
-			(uuid "3a4797b6-eb5c-4b5f-aec3-5554cf7f81df")
+			(uuid "88537608-3dd2-4953-a227-c436ac5f132e")
 			(effects
 				(font
 					(size 1 1)
@@ -3299,7 +3299,7 @@
 			(unlocked yes)
 			(layer "F.Fab")
 			(hide yes)
-			(uuid "0f5fab2c-cd84-4177-9e32-9eb6c350f7c3")
+			(uuid "390ee89b-f572-49ac-86ea-c256434c00cc")
 			(effects
 				(font
 					(size 1 1)
@@ -3312,7 +3312,7 @@
 			(unlocked yes)
 			(layer "F.Fab")
 			(hide yes)
-			(uuid "0650cf10-6408-4f17-9cc4-1e71320b1393")
+			(uuid "9508e56a-a792-401a-93f3-faaf0b0bbb44")
 			(effects
 				(font
 					(size 1 1)
@@ -3325,7 +3325,7 @@
 			(unlocked yes)
 			(layer "F.Fab")
 			(hide yes)
-			(uuid "b75a5f29-16d7-428e-ae79-d97126440e5f")
+			(uuid "64351149-f08a-42b8-8861-3786b2c2f005")
 			(effects
 				(font
 					(size 1 1)
@@ -3338,7 +3338,7 @@
 			(unlocked yes)
 			(layer "F.Fab")
 			(hide yes)
-			(uuid "220ef81f-c15f-494b-8edf-9c82d1a4d748")
+			(uuid "0c2d8b0b-40f7-4f0c-811d-2171047757b7")
 			(effects
 				(font
 					(size 1 1)
@@ -3348,7 +3348,7 @@
 		)
 		(path "/2afb3f39-d837-4364-9245-572878941005")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr through_hole)
 		(fp_line
 			(start 5 -2.95)
@@ -3358,7 +3358,7 @@
 				(type solid)
 			)
 			(layer "F.SilkS")
-			(uuid "afc4d64a-83e7-4908-bf89-a4c19e38a394")
+			(uuid "8aab6ce6-1c97-4523-86fb-22d81682fce1")
 		)
 		(fp_line
 			(start -4.5 -2.95)
@@ -3368,7 +3368,7 @@
 				(type solid)
 			)
 			(layer "F.SilkS")
-			(uuid "a50b72a0-2b2d-427e-a69a-2a7d58920ad1")
+			(uuid "1a582bf2-566d-4204-a369-402a0300443f")
 		)
 		(fp_line
 			(start -4.5 -2.55)
@@ -3378,7 +3378,7 @@
 				(type solid)
 			)
 			(layer "F.SilkS")
-			(uuid "45d4660c-6594-4408-9de2-1c155201e6cd")
+			(uuid "0d29351e-cb1b-475f-93f6-b90877e8b742")
 		)
 		(fp_line
 			(start -4.5 -2.55)
@@ -3388,7 +3388,7 @@
 				(type solid)
 			)
 			(layer "F.SilkS")
-			(uuid "aa12e4e7-9bc7-4c97-9df9-d6973238e738")
+			(uuid "06384a94-4379-4e1e-96cf-0565d490eed9")
 		)
 		(fp_line
 			(start -7 -2.55)
@@ -3398,7 +3398,7 @@
 				(type solid)
 			)
 			(layer "F.SilkS")
-			(uuid "8e311837-198a-464c-97e5-f5e847612f6a")
+			(uuid "a62334dd-b533-4566-8a55-df5f3b580d34")
 		)
 		(fp_line
 			(start -4.5 -0.95)
@@ -3408,7 +3408,7 @@
 				(type solid)
 			)
 			(layer "F.SilkS")
-			(uuid "9b4df945-e94e-4a99-9e7a-6f78349b7b76")
+			(uuid "f620d3de-a8e6-4a9c-88a7-9bc60b3c71ce")
 		)
 		(fp_line
 			(start -4.46 2.65)
@@ -3418,7 +3418,7 @@
 				(type solid)
 			)
 			(layer "F.SilkS")
-			(uuid "1a7dfb39-6679-45c3-8231-b7432cde4054")
+			(uuid "46404885-4807-494c-851d-52f383168a35")
 		)
 		(fp_line
 			(start -4.46 2.65)
@@ -3428,7 +3428,7 @@
 				(type solid)
 			)
 			(layer "F.SilkS")
-			(uuid "ef159ee0-5c21-43aa-b564-5877fd744c8c")
+			(uuid "be823df5-a75c-42ff-89f9-e9e68f4e903e")
 		)
 		(fp_line
 			(start -7 2.65)
@@ -3438,7 +3438,7 @@
 				(type solid)
 			)
 			(layer "F.SilkS")
-			(uuid "61a7398b-5657-4595-8910-ecd0d863156e")
+			(uuid "8527f755-5564-4441-9926-71cd080fc610")
 		)
 		(fp_line
 			(start 7 3.05)
@@ -3448,7 +3448,7 @@
 				(type solid)
 			)
 			(layer "F.SilkS")
-			(uuid "871783c3-12e0-4bf9-a6e0-96fa4120a378")
+			(uuid "f6e84b0a-3183-4fa5-9bc9-446cff429aff")
 		)
 		(fp_line
 			(start 5.4 3.05)
@@ -3458,7 +3458,7 @@
 				(type solid)
 			)
 			(layer "F.SilkS")
-			(uuid "72a046ab-a06d-44e2-8685-dc769b42b6e5")
+			(uuid "c1f794e6-586a-4a28-9042-a649d7464792")
 		)
 		(fp_line
 			(start -1.4 3.05)
@@ -3468,7 +3468,7 @@
 				(type solid)
 			)
 			(layer "F.SilkS")
-			(uuid "21a4ff65-381e-482d-b9fa-503bd01005a9")
+			(uuid "e2b33376-fdf6-44ac-bb8a-c2bc274c2cd6")
 		)
 		(fp_line
 			(start -4.46 3.05)
@@ -3478,7 +3478,7 @@
 				(type solid)
 			)
 			(layer "F.SilkS")
-			(uuid "011b3c10-e3e5-424a-bd98-9f750e7b9711")
+			(uuid "fe77d26d-48f1-40d2-ba50-45fdacc53680")
 		)
 		(fp_line
 			(start -2.5 5.2)
@@ -3488,7 +3488,7 @@
 				(type solid)
 			)
 			(layer "F.SilkS")
-			(uuid "057cc9dc-3ce2-4cf8-bb1b-f97b964d1844")
+			(uuid "1cdbf41d-5002-47c7-a457-1cf77b9f6c91")
 		)
 		(fp_line
 			(start -2.5 5.3)
@@ -3498,7 +3498,7 @@
 				(type solid)
 			)
 			(layer "F.SilkS")
-			(uuid "4dabec08-0690-4786-a014-3235b39bfae1")
+			(uuid "30ac33ab-fdf9-401a-877a-e6864846d184")
 		)
 		(fp_line
 			(start -2.5 5.3)
@@ -3508,7 +3508,7 @@
 				(type solid)
 			)
 			(layer "F.SilkS")
-			(uuid "0b91d1ba-e386-48ae-a424-9e4bf0f0f95e")
+			(uuid "3d696176-c240-40cf-b36c-e70d6c6b53d8")
 		)
 		(fp_arc
 			(start -2.5 5.2)
@@ -3519,7 +3519,7 @@
 				(type solid)
 			)
 			(layer "F.SilkS")
-			(uuid "305eedcc-b13c-4377-95b1-68279b883939")
+			(uuid "7becda19-2a28-46e7-8260-4fabbd8848cf")
 		)
 		(fp_arc
 			(start -2.5 5.3)
@@ -3530,7 +3530,7 @@
 				(type solid)
 			)
 			(layer "F.SilkS")
-			(uuid "f8ab75b1-f1cd-4cf7-8e41-fde8da0401af")
+			(uuid "7e817301-e627-4431-a699-d4ed861e9666")
 		)
 		(fp_line
 			(start 8 -5.7)
@@ -3540,7 +3540,7 @@
 				(type solid)
 			)
 			(layer "F.CrtYd")
-			(uuid "f1ec61f5-a1ae-4ef4-bdb9-7401bc02a413")
+			(uuid "02fbb529-dd3e-4472-92af-4391382d5432")
 		)
 		(fp_line
 			(start -8 -5.7)
@@ -3550,7 +3550,7 @@
 				(type solid)
 			)
 			(layer "F.CrtYd")
-			(uuid "b7a1569b-85f9-40af-89c5-aa144b35abb7")
+			(uuid "9e1dd17f-dd13-4a0c-b04b-2da6edb4a52a")
 		)
 		(fp_line
 			(start 8 5.8)
@@ -3560,7 +3560,7 @@
 				(type solid)
 			)
 			(layer "F.CrtYd")
-			(uuid "d59d5b9d-4c6c-4d7b-b287-81ea120d5877")
+			(uuid "9744a5ab-70cd-4f92-a420-089249772171")
 		)
 		(fp_line
 			(start -8 5.8)
@@ -3570,7 +3570,7 @@
 				(type solid)
 			)
 			(layer "F.CrtYd")
-			(uuid "3de07569-4c96-44a2-9f8d-caafaf08149e")
+			(uuid "84a790bf-3976-4ce3-a10c-a0db1262fb79")
 		)
 		(fp_line
 			(start 7 -2.95)
@@ -3580,7 +3580,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "902116a3-09fb-49d5-a7ef-c0902f4c5553")
+			(uuid "f66f3656-ddff-449f-94b0-4919f12531f6")
 		)
 		(fp_line
 			(start -2 -2.95)
@@ -3590,7 +3590,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "43818581-f8a8-4672-a090-803927181c41")
+			(uuid "d93692aa-8a11-48a6-a3fa-1d71b3314276")
 		)
 		(fp_line
 			(start -4.5 -2.95)
@@ -3600,7 +3600,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "128fd954-333d-4f68-9800-3f157d644135")
+			(uuid "394af1e3-75ab-459d-bec0-70356188a652")
 		)
 		(fp_line
 			(start -4.5 -2.55)
@@ -3610,7 +3610,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "7a7b8a39-3e3a-44a5-b056-bafe7e41b1bd")
+			(uuid "7c9924c2-fde3-4c76-ab08-a79c456da574")
 		)
 		(fp_line
 			(start -7 -2.55)
@@ -3620,7 +3620,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "27aa5839-1277-4daa-bab4-e8b2378a83c7")
+			(uuid "335b25e0-16d1-4cd2-898d-81611aa7a2ab")
 		)
 		(fp_line
 			(start -7 2.65)
@@ -3630,7 +3630,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "2fcd5bf5-b6ce-4944-b290-dd610e868357")
+			(uuid "00dac4c9-717c-4b1c-a3de-c833d908794e")
 		)
 		(fp_line
 			(start 7 3.05)
@@ -3640,7 +3640,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "505f48af-3cd1-4923-b505-449b19226c52")
+			(uuid "8c1e6d97-9a8a-48cc-ab64-30632b62ce6d")
 		)
 		(fp_line
 			(start -4.46 3.05)
@@ -3650,7 +3650,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "23b39892-bc8e-496a-bb46-c57acfba1eeb")
+			(uuid "2ceb005c-0e5f-4b93-bcd4-1da2849db2d8")
 		)
 		(fp_text user "${REFERENCE}"
 			(at 0 0.05 90)
@@ -3668,14 +3668,14 @@
 			(size 1.5 1.5)
 			(drill 1.5)
 			(layers "*.Cu" "*.Mask")
-			(uuid "9213dda2-c484-4dfa-bd45-1bd3af9c6bc2")
+			(uuid "c9b8a829-7518-479d-87b3-5b45173fc786")
 		)
 		(pad "" np_thru_hole circle
 			(at 4 0.05 90)
 			(size 1.5 1.5)
 			(drill 1.5)
 			(layers "*.Cu" "*.Mask")
-			(uuid "9ebaa5f8-2385-441c-bf06-f5f03245c1c5")
+			(uuid "184e5f66-877b-432f-b940-41a2525e02c4")
 		)
 		(pad "1" smd rect
 			(at -2.5 3.425 90)
@@ -3782,7 +3782,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/bfe403a8-116a-48fb-9667-4b0441c9fa4b")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.153641 -0.38)
@@ -3982,7 +3982,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/fcbbd919-627a-4cf2-b540-54e5125d4de4")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.237258 -0.5225)
@@ -4183,7 +4183,7 @@
 		(property ki_fp_filters "Crystal*")
 		(path "/50dbbf34-95e6-41e9-93d4-5470239952eb")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.675 0.875)
@@ -4383,7 +4383,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/5e36aa6d-b050-4830-9cc3-8ceea2c1101f")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 -0.51)
@@ -4583,7 +4583,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/9164403c-c1cc-4cba-b4b0-ec6d6823e035")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 0.51)
@@ -4783,7 +4783,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/5b883782-8fbe-4cb8-a93b-e5addb7afbe5")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 0.51)
@@ -4983,7 +4983,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/070e4c70-f3a9-4511-9961-c3d51ab3a8a2")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.237258 -0.5225)
@@ -5185,7 +5185,7 @@
 			(unlocked yes)
 			(layer "F.Fab")
 			(hide yes)
-			(uuid "aa0f13db-4a36-4a8b-9184-13af7b2dbb51")
+			(uuid "d037a084-4178-4d44-b201-1cff2ce8adba")
 			(effects
 				(font
 					(size 1 1)
@@ -5198,7 +5198,7 @@
 			(unlocked yes)
 			(layer "F.Fab")
 			(hide yes)
-			(uuid "7756f338-e10c-4c8c-9819-1cce0dbc2eb2")
+			(uuid "d2928f34-aae0-471a-b897-5c11cb51d5cd")
 			(effects
 				(font
 					(size 1 1)
@@ -5211,7 +5211,7 @@
 			(unlocked yes)
 			(layer "F.Fab")
 			(hide yes)
-			(uuid "0a896448-c7fb-496b-a43e-588013854002")
+			(uuid "ba17c372-93f0-4710-93d9-9ef0155afc2f")
 			(effects
 				(font
 					(size 1 1)
@@ -5224,7 +5224,7 @@
 			(unlocked yes)
 			(layer "F.Fab")
 			(hide yes)
-			(uuid "09ef45e1-a2e2-445e-8cd2-beaffaa8dcc6")
+			(uuid "8ea2181f-0183-4c44-98db-c099317fe131")
 			(effects
 				(font
 					(size 1 1)
@@ -5237,7 +5237,7 @@
 			(unlocked yes)
 			(layer "F.Fab")
 			(hide yes)
-			(uuid "9fe4f77b-e763-409e-b44c-f66c877ebcb0")
+			(uuid "4d667965-4cb8-434a-ad3c-1b3fec1817f0")
 			(effects
 				(font
 					(size 1 1)
@@ -5247,7 +5247,7 @@
 		)
 		(path "/732a0fcc-1a29-40e6-9231-5d0cf8091770")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -1.85 -1.5)
@@ -5257,7 +5257,7 @@
 				(type solid)
 			)
 			(layer "F.SilkS")
-			(uuid "ce784267-ada8-4e9a-9cfd-4c11c49c2355")
+			(uuid "6e799f83-5e43-4019-996c-d30b454f9297")
 		)
 		(fp_line
 			(start -0.3 -1.45)
@@ -5267,7 +5267,7 @@
 				(type solid)
 			)
 			(layer "F.SilkS")
-			(uuid "219e4374-7f86-4e73-adae-2822fca04eb5")
+			(uuid "ed9ef7be-5a35-4772-a54e-e86bb7caefd5")
 		)
 		(fp_line
 			(start -0.3 1.45)
@@ -5277,7 +5277,7 @@
 				(type solid)
 			)
 			(layer "F.SilkS")
-			(uuid "a771804f-690f-4a64-ad6f-ab1854bb5f41")
+			(uuid "ca1f30a4-2b19-48ab-852e-d50c969e67ca")
 		)
 		(fp_line
 			(start 0.3 -1.45)
@@ -5287,7 +5287,7 @@
 				(type solid)
 			)
 			(layer "F.SilkS")
-			(uuid "5e9d6446-beb6-403d-8cc4-e775fedc7223")
+			(uuid "b80631b2-1528-420c-8a0b-38f1255f2bf3")
 		)
 		(fp_line
 			(start 0.3 1.45)
@@ -5297,7 +5297,7 @@
 				(type solid)
 			)
 			(layer "F.SilkS")
-			(uuid "19323563-04f8-4f24-b392-4dd8f494e1c9")
+			(uuid "77d4aa5a-0767-4e9b-9b0f-b7aa362de694")
 		)
 		(fp_line
 			(start -2.1 -1.775)
@@ -5307,7 +5307,7 @@
 				(type solid)
 			)
 			(layer "F.CrtYd")
-			(uuid "b6d140c2-0387-4d56-8a11-51761bf69798")
+			(uuid "257c33aa-3f1b-4eb6-b4ac-08a117725f8c")
 		)
 		(fp_line
 			(start -2.1 1.775)
@@ -5317,7 +5317,7 @@
 				(type solid)
 			)
 			(layer "F.CrtYd")
-			(uuid "46ec86c2-cbf8-44e9-9a98-ddc96f83aab2")
+			(uuid "0883b8b3-8d13-436e-96da-0ae5d9a55d67")
 		)
 		(fp_line
 			(start 2.1 -1.775)
@@ -5327,7 +5327,7 @@
 				(type solid)
 			)
 			(layer "F.CrtYd")
-			(uuid "8c324cf9-1647-471b-9a71-be00b8e722df")
+			(uuid "fefdd3cc-298b-49d7-b96f-667565d0c957")
 		)
 		(fp_line
 			(start 2.1 1.775)
@@ -5337,7 +5337,7 @@
 				(type solid)
 			)
 			(layer "F.CrtYd")
-			(uuid "505cbc0e-0a77-4053-9352-7862b69a48e4")
+			(uuid "f5b05b83-d92c-433e-a36c-b28cf6c8afc4")
 		)
 		(fp_line
 			(start -0.8 -1.45)
@@ -5347,7 +5347,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "4ae3c0d8-30b8-45cc-83cc-e22c7e395168")
+			(uuid "6bca2086-9e19-4589-8943-c903304a43b6")
 		)
 		(fp_line
 			(start -0.8 -0.5)
@@ -5357,7 +5357,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "f91e9afb-69bf-4764-81e0-5f98cad9faf2")
+			(uuid "a333c4e5-6fd7-4551-b225-a64bc6f81da2")
 		)
 		(fp_line
 			(start -0.8 1.45)
@@ -5367,7 +5367,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "f8997f25-8ac6-4d52-b145-83307dc46dfe")
+			(uuid "cce960b7-3a51-47cd-bd37-df68e0e8a9a3")
 		)
 		(fp_line
 			(start 0.8 -1.45)
@@ -5377,7 +5377,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "822e3ca2-8226-4d8a-9153-d37acb62af7f")
+			(uuid "020e2771-89b4-4dd6-9b0b-571f11ffe20b")
 		)
 		(fp_line
 			(start 0.8 1.45)
@@ -5387,7 +5387,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "181f7667-79d6-43aa-89b2-5173456d4052")
+			(uuid "63c71d42-dcd2-4b60-980d-69403656763c")
 		)
 		(fp_text user "${REFERENCE}"
 			(at 0 0 0)
@@ -5514,7 +5514,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/3d2c7fbc-e64f-429f-a41d-74e7701b9931")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 0.51)
@@ -5714,7 +5714,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/69828603-15a8-4771-9703-7e1026661765")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 0.51)
@@ -5914,7 +5914,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/8f770aa8-0f59-40e1-acf4-9baba42069c9")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.237258 -0.5225)
@@ -6114,7 +6114,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/7cf13fb2-6ba6-4e89-9cbb-f17f5c3d9c36")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 0.51)
@@ -6314,7 +6314,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/e9fcc0a6-573a-41db-96cc-daeaeb68769a")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 -0.51)
@@ -6514,7 +6514,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/4f6d978b-a5ca-42ab-a0c8-5f1cd598b0a9")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 -0.51)
@@ -6714,7 +6714,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/535abe96-f689-42fb-a59e-071f9afe3908")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 0.51)
@@ -6914,7 +6914,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/b65383b5-7ae5-4944-9378-94d3db1e6c8e")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.107836 -0.36)
@@ -7114,7 +7114,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/f2931d25-2188-4685-87cf-62d9d5543b99")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 -0.51)
@@ -7314,7 +7314,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/845353e9-8dd2-4e36-b736-842fa30e66bb")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 0.51)
@@ -7514,7 +7514,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/11fe3d29-f395-4b9d-8d16-b59dedf46b21")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.107836 -0.36)
@@ -7714,7 +7714,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/91270ce2-a444-4ea8-bae7-83053142a1e0")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 0.51)
@@ -7914,7 +7914,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/72a10b6f-67f2-47e1-a43a-14e9a2823a8e")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.237258 -0.5225)
@@ -8114,7 +8114,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/0b5cfafa-688b-4b90-aacf-fe3aa7b66267")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 -0.51)
@@ -8314,7 +8314,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/370ab361-3596-4385-b910-7e700bdc8518")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.237258 -0.5225)
@@ -8514,7 +8514,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/17b4b684-59df-44bf-a6cb-508e6d6e5511")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.237258 -0.5225)
@@ -8714,7 +8714,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/776357e6-a702-4009-8005-809d5e4785af")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.261252 0.735)
@@ -8914,7 +8914,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/7e2f85fc-68f2-4478-a25a-4b3f15adb5be")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.237258 -0.5225)
@@ -9113,7 +9113,7 @@
 		(property ki_fp_filters "Connector*:*_1x??_*")
 		(path "/e3eced4d-5fec-4641-9066-509b38299e1f")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr through_hole)
 		(fp_line
 			(start -1.27 -1.27)
@@ -9971,7 +9971,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/edddc71e-7cb2-4578-a3bc-612d446fd20d")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.237258 -0.5225)
@@ -10171,7 +10171,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/f0191768-bf7c-47be-809b-04226f0ae713")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.237258 0.5225)
@@ -10384,7 +10384,7 @@
 		(property ki_fp_filters "LED* LED_SMD:* LED_THT:*")
 		(path "/8b6b5914-c002-4170-a5de-c2fd17b77ecf")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_circle
 			(center -1.265 0)
@@ -10597,7 +10597,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/5a67b056-ca29-4ff2-ad99-ee4ecdcc7a46")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 0.51)
@@ -10797,7 +10797,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/658e2d1a-7d84-4bff-bc69-f4ff4b49a0a3")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.237258 0.5225)
@@ -10997,7 +10997,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/739fdfc4-fa0c-410c-b587-d7cd1ce99e39")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 -0.51)
@@ -11197,7 +11197,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/3c9156a6-6a99-4f7b-9c9d-92b934c30062")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.153641 0.38)
@@ -11410,7 +11410,7 @@
 		(property ki_fp_filters "LED* LED_SMD:* LED_THT:*")
 		(path "/d54df1bf-e639-4f01-bd73-4cf55b0998fc")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_circle
 			(center -1.265 0)
@@ -11623,7 +11623,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/9996e42f-a995-4b87-a9ad-2ad6d5ab1e11")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.237258 -0.5225)
@@ -11823,7 +11823,7 @@
 		(property ki_fp_filters "Pin* Test*")
 		(path "/630599ca-1e32-4da3-a0b2-b18917e0727a")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr through_hole)
 		(fp_line
 			(start -1.38 -1.38)
@@ -12067,7 +12067,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/0af8be7e-439f-4470-882e-f462efefd851")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.237258 0.5225)
@@ -12267,7 +12267,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/2c427267-064f-4c79-96a5-fe97f9980903")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.237258 -0.5225)
@@ -12467,7 +12467,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/e64c96c1-89b3-45c2-8ae5-ecd2d3385d50")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.107836 -0.36)
@@ -12667,7 +12667,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/e7e54556-7394-45a3-839e-87c4cdf50e61")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 -0.51)
@@ -12867,7 +12867,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/8b6715c8-7adc-4136-9581-e7ea4f80d6c4")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 0.51)
@@ -13080,7 +13080,7 @@
 		(property ki_fp_filters "LED* LED_SMD:* LED_THT:*")
 		(path "/06f292d4-695c-4e9f-bb81-aed4f42551b5")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_circle
 			(center -1.265 0)
@@ -13293,7 +13293,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/538b1a31-7a8b-4e61-b8ef-39dc4759dbe6")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.237258 -0.5225)
@@ -13493,7 +13493,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/329e7692-1a3e-4a55-8468-a85f7d718268")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.237258 -0.5225)
@@ -13693,7 +13693,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/fdf7d12a-bcf1-4eca-a613-471c970d00c2")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 0.51)
@@ -13893,7 +13893,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/ce54317d-4fe8-4f05-b21e-61debf0b17c8")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.107836 0.36)
@@ -14093,7 +14093,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/f7b95fed-bb3d-4bb3-9784-9af5c54b2f6f")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 0.51)
@@ -14293,7 +14293,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/d9dc739e-8534-44af-b9e5-d0f0faaf1393")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 -0.51)
@@ -14493,7 +14493,7 @@
 		(property ki_fp_filters "LGA-14L_STM LGA-14L_STM-M LGA-14L_STM-L")
 		(path "/69a26324-354b-4731-b206-fcb39077fdf6")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -1.6256 1.3716)
@@ -14503,7 +14503,7 @@
 				(type solid)
 			)
 			(layer "F.SilkS")
-			(uuid "be37e6ed-8335-461b-80d3-94d616062a84")
+			(uuid "60c952d8-e1f5-4f9b-9c31-b0103824378b")
 		)
 		(fp_line
 			(start -0.95329 -1.3716)
@@ -14513,7 +14513,7 @@
 				(type solid)
 			)
 			(layer "F.SilkS")
-			(uuid "233ba1e0-a4d6-4673-b5cc-0a32eb86f53f")
+			(uuid "168bff2c-d683-4568-a99b-236e476b253f")
 		)
 		(fp_line
 			(start 0.95329 1.3716)
@@ -14523,7 +14523,7 @@
 				(type solid)
 			)
 			(layer "F.SilkS")
-			(uuid "b29e2f14-a8f2-4881-a16d-cfd01931e00a")
+			(uuid "528c98f3-c69b-42d5-a7e7-5861fa7c743b")
 		)
 		(fp_line
 			(start 1.6256 -1.3716)
@@ -14533,7 +14533,7 @@
 				(type solid)
 			)
 			(layer "F.SilkS")
-			(uuid "2c74fa32-569c-4b82-b73d-74909f9f048b")
+			(uuid "f96e7b94-e34c-46fa-9223-74f1c828ed0b")
 		)
 		(fp_poly
 			(pts
@@ -14545,7 +14545,7 @@
 			)
 			(fill yes)
 			(layer "F.SilkS")
-			(uuid "0b293df7-f548-446a-8018-5876193bf27b")
+			(uuid "b2bcc3e8-a4c7-4b94-b0f4-b31b8e8b4ba4")
 		)
 		(fp_line
 			(start -1.7526 -1.4986)
@@ -14555,7 +14555,7 @@
 				(type solid)
 			)
 			(layer "F.CrtYd")
-			(uuid "c9c0860d-2ba8-450e-b59e-f1772154cd67")
+			(uuid "50193399-7504-4740-91da-a3279296e433")
 		)
 		(fp_line
 			(start -1.7526 -1.1564)
@@ -14565,7 +14565,7 @@
 				(type solid)
 			)
 			(layer "F.CrtYd")
-			(uuid "9ec1fd3f-bb93-420d-904c-db1be743cf9e")
+			(uuid "c6141abe-4f49-4e9c-8f94-c3b939b7d792")
 		)
 		(fp_line
 			(start -1.7526 -1.1564)
@@ -14575,7 +14575,7 @@
 				(type solid)
 			)
 			(layer "F.CrtYd")
-			(uuid "37539940-6f43-4d2b-a3fa-bac66e22fc34")
+			(uuid "432ace75-9fc6-4c8f-a301-c597653fa7b3")
 		)
 		(fp_line
 			(start -1.7526 1.1564)
@@ -14585,7 +14585,7 @@
 				(type solid)
 			)
 			(layer "F.CrtYd")
-			(uuid "daeee42a-9bcf-4976-adbe-a0b74f1deb9b")
+			(uuid "bd7cdd76-c750-4162-9754-8a44e73d469a")
 		)
 		(fp_line
 			(start -1.7526 1.1564)
@@ -14595,7 +14595,7 @@
 				(type solid)
 			)
 			(layer "F.CrtYd")
-			(uuid "dd7b1630-66a3-49b3-944a-879a45949a9d")
+			(uuid "44bf959f-d169-4342-8c6e-5255755952d7")
 		)
 		(fp_line
 			(start -1.7526 1.4986)
@@ -14605,7 +14605,7 @@
 				(type solid)
 			)
 			(layer "F.CrtYd")
-			(uuid "04d36054-60a3-4d42-9f3f-6df88790335c")
+			(uuid "d39dc353-c66a-468f-924f-55680db20949")
 		)
 		(fp_line
 			(start -0.9064 -1.4986)
@@ -14615,7 +14615,7 @@
 				(type solid)
 			)
 			(layer "F.CrtYd")
-			(uuid "8f88bedf-4c47-4b5d-a8ba-693a627aecfe")
+			(uuid "2ac93a5b-1080-4b31-a134-9678dc45b99e")
 		)
 		(fp_line
 			(start -0.9064 -1.4986)
@@ -14625,7 +14625,7 @@
 				(type solid)
 			)
 			(layer "F.CrtYd")
-			(uuid "0999bc2d-550e-4853-a3ca-c5c822879fbc")
+			(uuid "118acffa-7ee3-4b79-b6fa-7c0d5e408768")
 		)
 		(fp_line
 			(start -0.9064 1.4986)
@@ -14635,7 +14635,7 @@
 				(type solid)
 			)
 			(layer "F.CrtYd")
-			(uuid "2bf67f59-207f-4bf9-a1e6-42b36549b244")
+			(uuid "07fa19d2-59a3-4d8e-a69b-fb41fbe79bb8")
 		)
 		(fp_line
 			(start -0.9064 1.4986)
@@ -14645,7 +14645,7 @@
 				(type solid)
 			)
 			(layer "F.CrtYd")
-			(uuid "aa2dd4fc-ce75-41f0-89be-d3c0dbed48cb")
+			(uuid "d46f2c94-712a-4715-a1a3-277dceeb398d")
 		)
 		(fp_line
 			(start 0.9064 -1.4986)
@@ -14655,7 +14655,7 @@
 				(type solid)
 			)
 			(layer "F.CrtYd")
-			(uuid "47bfe58f-34a4-4fc5-8209-470a70166e05")
+			(uuid "958f0cc6-a663-42db-9e23-0b03081fc9b5")
 		)
 		(fp_line
 			(start 0.9064 -1.4986)
@@ -14665,7 +14665,7 @@
 				(type solid)
 			)
 			(layer "F.CrtYd")
-			(uuid "cd35047b-9ab2-45e9-94a8-5a793e82b66b")
+			(uuid "c18b8d89-0ab3-47d3-9e45-3492ecdc3862")
 		)
 		(fp_line
 			(start 0.9064 1.4986)
@@ -14675,7 +14675,7 @@
 				(type solid)
 			)
 			(layer "F.CrtYd")
-			(uuid "5a553994-0d07-432a-af62-29653fafa99e")
+			(uuid "4ce401c2-6c87-4664-9d23-118e1406838c")
 		)
 		(fp_line
 			(start 0.9064 1.4986)
@@ -14685,7 +14685,7 @@
 				(type solid)
 			)
 			(layer "F.CrtYd")
-			(uuid "264017e6-6256-4153-9a74-9f5a23709ac8")
+			(uuid "da4c439e-c466-4d2e-8c17-ef08330ab979")
 		)
 		(fp_line
 			(start 1.7526 -1.4986)
@@ -14695,7 +14695,7 @@
 				(type solid)
 			)
 			(layer "F.CrtYd")
-			(uuid "7a5da723-503d-4109-85b8-283e1fa38fb9")
+			(uuid "3c62f23e-0ea8-41f5-9418-552736661323")
 		)
 		(fp_line
 			(start 1.7526 -1.1564)
@@ -14705,7 +14705,7 @@
 				(type solid)
 			)
 			(layer "F.CrtYd")
-			(uuid "1b46c3d3-957c-4997-b642-3f59fe1cc49a")
+			(uuid "df2782f4-a5e0-4e6f-bc6d-398424f00728")
 		)
 		(fp_line
 			(start 1.7526 -1.1564)
@@ -14715,7 +14715,7 @@
 				(type solid)
 			)
 			(layer "F.CrtYd")
-			(uuid "11535735-7f8e-4ad3-9d6e-e34c2414ef25")
+			(uuid "ee7aff38-6047-4daa-89f9-c66d3e222719")
 		)
 		(fp_line
 			(start 1.7526 1.1564)
@@ -14725,7 +14725,7 @@
 				(type solid)
 			)
 			(layer "F.CrtYd")
-			(uuid "6fc3c786-c161-4e54-b5ac-4ebecc3d8638")
+			(uuid "46c4fc9f-56c0-4312-a8ed-74e46afac421")
 		)
 		(fp_line
 			(start 1.7526 1.1564)
@@ -14735,7 +14735,7 @@
 				(type solid)
 			)
 			(layer "F.CrtYd")
-			(uuid "f1437787-0b1f-4f1a-a92f-e85502746963")
+			(uuid "ce2defa1-ba50-418d-a657-f738ff329a30")
 		)
 		(fp_line
 			(start 1.7526 1.4986)
@@ -14745,7 +14745,7 @@
 				(type solid)
 			)
 			(layer "F.CrtYd")
-			(uuid "cff29138-c032-4379-9870-ad41e49b45e4")
+			(uuid "b28cc359-4463-46ba-8394-70c509067a14")
 		)
 		(fp_line
 			(start -1.4986 -1.2446)
@@ -14755,7 +14755,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "cc5aac86-1427-494f-a4f7-8b9a178cec8c")
+			(uuid "103d85ab-b07b-4d38-ba74-a42d74822ccf")
 		)
 		(fp_line
 			(start -1.4986 -1.2446)
@@ -14765,7 +14765,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "72cf2e54-c910-48ec-b38a-530cf77c47fc")
+			(uuid "2473c496-e886-4816-9207-b36b8d781ad5")
 		)
 		(fp_line
 			(start -1.4986 -0.9024)
@@ -14775,7 +14775,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "e0f09cdc-8ab0-4ccb-80c6-d93ab8525594")
+			(uuid "7e315576-f0d9-4859-b4b3-96f9d2254a75")
 		)
 		(fp_line
 			(start -1.4986 -0.5976)
@@ -14785,7 +14785,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "fcacd087-d7a8-44e3-9eff-56f3fce13bc2")
+			(uuid "ef4d22df-04e7-4a80-bf10-63a4137e7e57")
 		)
 		(fp_line
 			(start -1.4986 -0.4024)
@@ -14795,7 +14795,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "ae1441b5-5b9a-4e6d-96fe-6559ef4d7812")
+			(uuid "a9061226-b25a-4af0-91ea-267df78f44aa")
 		)
 		(fp_line
 			(start -1.4986 -0.0976)
@@ -14805,7 +14805,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "2f1f93e6-046c-43e2-a674-e1b06a5e92f6")
+			(uuid "e99ac3be-82aa-405a-92e2-5ceb76f18cda")
 		)
 		(fp_line
 			(start -1.4986 0.0254)
@@ -14815,7 +14815,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "a005d88f-95c6-4c00-bbe1-1b3858f711fa")
+			(uuid "9e548b74-8fae-48c8-86e0-9331251f3238")
 		)
 		(fp_line
 			(start -1.4986 0.0976)
@@ -14825,7 +14825,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "4495d1cd-7846-4749-a7d9-e6789df64337")
+			(uuid "2a442b49-68b1-46e3-9062-37d04252beda")
 		)
 		(fp_line
 			(start -1.4986 0.4024)
@@ -14835,7 +14835,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "03500c41-e2e4-401c-9219-393d60ff2198")
+			(uuid "968f4e17-896f-4282-b600-217882b22200")
 		)
 		(fp_line
 			(start -1.4986 0.5976)
@@ -14845,7 +14845,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "4604acc3-54f1-444d-b61b-9142f26f658a")
+			(uuid "91b82769-cdb7-466d-9a33-0f3613d38264")
 		)
 		(fp_line
 			(start -1.4986 0.9024)
@@ -14855,7 +14855,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "976e722c-b8ab-432d-a3fc-bf5eabf072ef")
+			(uuid "6bcc9884-94df-4fcd-9150-b4a41e3bfde8")
 		)
 		(fp_line
 			(start -1.4986 1.2446)
@@ -14865,7 +14865,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "1cdf5e17-71fc-42dd-bb6b-09b09700226e")
+			(uuid "8fcebdc5-0b6f-476c-a279-92fc531beb62")
 		)
 		(fp_line
 			(start -1.4986 1.2446)
@@ -14875,7 +14875,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "b728b233-2328-41ea-adb1-287adad0f954")
+			(uuid "3eebce79-8663-4c5c-b06a-11be274d313b")
 		)
 		(fp_line
 			(start -1.397 -0.9024)
@@ -14885,7 +14885,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "2426f251-5c0e-4583-a1f7-a4a31e05c730")
+			(uuid "b83e1864-900d-4cf1-bbde-447fac60f5b2")
 		)
 		(fp_line
 			(start -1.397 -0.5976)
@@ -14895,7 +14895,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "b02e8baf-1ac7-49da-8010-cdf2b91abfb0")
+			(uuid "cfc6c22a-c668-42bd-b596-e89ba4f07f65")
 		)
 		(fp_line
 			(start -1.397 -0.4024)
@@ -14905,7 +14905,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "5ca9abb3-d1ed-4463-b4c5-c203d46b3e73")
+			(uuid "fcb1a652-680c-4410-9228-405a5d711897")
 		)
 		(fp_line
 			(start -1.397 -0.0976)
@@ -14915,7 +14915,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "772decd0-0268-44f4-9ed4-c5492ac0540a")
+			(uuid "75941c3f-0d65-45f3-99a1-a382520df916")
 		)
 		(fp_line
 			(start -1.397 0.0976)
@@ -14925,7 +14925,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "ed6f2882-e80a-4616-b0a3-fe739241aa53")
+			(uuid "dfbcb0f2-f8d3-434c-9f3c-9a374f7caf9b")
 		)
 		(fp_line
 			(start -1.397 0.4024)
@@ -14935,7 +14935,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "1f0134c6-5fc5-4e8c-9586-367dee82550e")
+			(uuid "49b84380-2494-4bd5-9020-a1503bdb62c5")
 		)
 		(fp_line
 			(start -1.397 0.5976)
@@ -14945,7 +14945,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "42477f69-cf18-44d3-8e23-bf7bb14e6b0e")
+			(uuid "6b20b652-eca3-4d7f-8a98-f242b103833b")
 		)
 		(fp_line
 			(start -1.397 0.9024)
@@ -14955,7 +14955,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "2ecb92f4-a6c9-4521-8d08-5484b8b920bd")
+			(uuid "a2dd0fdc-a186-4db7-907a-abc292234cd0")
 		)
 		(fp_line
 			(start -0.6524 -1.2446)
@@ -14965,7 +14965,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "b6840121-94c4-48e6-b1a7-e452f5a8b40e")
+			(uuid "ddcc320a-73c4-450d-95bb-b1eaf2ceafe6")
 		)
 		(fp_line
 			(start -0.6524 -1.1557)
@@ -14975,7 +14975,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "22eaffc6-cc30-4e2e-b779-87e58dc4d596")
+			(uuid "43457a8c-ff2a-4d6e-89ef-a04f67581b8f")
 		)
 		(fp_line
 			(start -0.6524 1.1557)
@@ -14985,7 +14985,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "c298d574-6fd4-4b09-940c-c520180d6222")
+			(uuid "b84ab534-82e1-4517-9196-594e5b0a510b")
 		)
 		(fp_line
 			(start -0.6524 1.2446)
@@ -14995,7 +14995,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "88aa5232-c314-46e8-9403-2ae7958bd160")
+			(uuid "14b94236-bf82-455d-8f20-4fb1884b9013")
 		)
 		(fp_line
 			(start -0.3476 -1.2446)
@@ -15005,7 +15005,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "7e56d0f8-dc3a-4898-8762-e44b5fbe431e")
+			(uuid "2f3bd0d7-901e-4372-b09f-5e490624f40d")
 		)
 		(fp_line
 			(start -0.3476 -1.1557)
@@ -15015,7 +15015,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "92df21d3-e980-47a6-b403-d9599f665863")
+			(uuid "d1d9bf3b-33aa-4465-98d0-03b0a5fb7bfe")
 		)
 		(fp_line
 			(start -0.3476 1.1557)
@@ -15025,7 +15025,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "7cc8ce24-2216-4bff-a755-a7916d1c3f81")
+			(uuid "c2a7862d-027d-4ab7-b54a-04323556fbf2")
 		)
 		(fp_line
 			(start -0.3476 1.2446)
@@ -15035,7 +15035,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "e47e9f31-1cd4-4f96-8407-2b792f70eded")
+			(uuid "e6010199-8a13-4344-ad2e-24b3ec72d008")
 		)
 		(fp_line
 			(start -0.1524 -1.2446)
@@ -15045,7 +15045,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "15f9e002-5e7f-442a-9d49-3df1ba5bc293")
+			(uuid "f7beb61d-7e47-4268-8682-50693d4fe10f")
 		)
 		(fp_line
 			(start -0.1524 -1.1557)
@@ -15055,7 +15055,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "fb7625c7-21ae-42a9-9f7f-96dde2c38b47")
+			(uuid "2cf9837f-7124-4555-a753-0fdd3c7108c6")
 		)
 		(fp_line
 			(start -0.1524 1.1557)
@@ -15065,7 +15065,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "5d254736-cc64-4615-b99a-4f14a83466f1")
+			(uuid "27be425e-cc14-4fac-97df-aef9ee5e0262")
 		)
 		(fp_line
 			(start -0.1524 1.2446)
@@ -15075,7 +15075,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "2407feb2-4e68-4d6f-8812-f23d3c7a1383")
+			(uuid "f40a0de5-28b7-4dd8-95d3-2849dd7d7bcd")
 		)
 		(fp_line
 			(start 0.1524 -1.2446)
@@ -15085,7 +15085,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "dc9198af-a1de-49fb-8562-faf85388f9b4")
+			(uuid "f38490f2-3c4a-447a-8059-8c0633ccb7f3")
 		)
 		(fp_line
 			(start 0.1524 -1.1557)
@@ -15095,7 +15095,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "21e20195-b48e-4acb-b9ea-0520b6530ccd")
+			(uuid "d8db6101-d8a2-4b24-8d5c-b35ba046f8a3")
 		)
 		(fp_line
 			(start 0.1524 1.1557)
@@ -15105,7 +15105,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "ca7be628-0f32-4acd-b38c-791ec180e79b")
+			(uuid "815a6ed3-ef4d-40a4-bcfc-5d8b46f154f9")
 		)
 		(fp_line
 			(start 0.1524 1.2446)
@@ -15115,7 +15115,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "a14fff96-ac0e-4e89-93ee-3b9c9271d554")
+			(uuid "f370f2d8-de2c-4439-bc80-50490676d77c")
 		)
 		(fp_line
 			(start 0.3476 -1.2446)
@@ -15125,7 +15125,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "084401bd-6d92-4eb9-b125-415c4e69dad2")
+			(uuid "a46ac1a5-37d3-49a9-a3f5-f344d7019262")
 		)
 		(fp_line
 			(start 0.3476 -1.1557)
@@ -15135,7 +15135,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "d0a5a28d-92b0-4000-8d7c-e54aadc34e03")
+			(uuid "1648fe5b-d534-420a-b06a-29bf5bd9bd20")
 		)
 		(fp_line
 			(start 0.3476 1.1557)
@@ -15145,7 +15145,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "88ad5933-707b-4a37-a823-b9fc25670dc0")
+			(uuid "39e1b368-b166-4faa-9a71-c86572db0371")
 		)
 		(fp_line
 			(start 0.3476 1.2446)
@@ -15155,7 +15155,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "710290d4-900c-4d18-b834-efc7940246a5")
+			(uuid "14813458-3fd5-4a6a-9265-518528eb4543")
 		)
 		(fp_line
 			(start 0.6524 -1.2446)
@@ -15165,7 +15165,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "cdb229cd-d0b7-4eaf-8ccf-357efb14935d")
+			(uuid "c0d5ad34-0a42-4fc0-b67d-bc6c569b5163")
 		)
 		(fp_line
 			(start 0.6524 -1.1557)
@@ -15175,7 +15175,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "7d3ccafa-d573-4147-9d7e-46cefc2fd7ad")
+			(uuid "8d8e47a3-2ade-4d7f-95be-7a22110918ae")
 		)
 		(fp_line
 			(start 0.6524 1.1557)
@@ -15185,7 +15185,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "677c6218-2f8a-4211-955b-df34586c8f48")
+			(uuid "c2fcb593-0a1e-4878-994c-3fd7184c1703")
 		)
 		(fp_line
 			(start 0.6524 1.2446)
@@ -15195,7 +15195,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "2093b9b7-7ab4-487f-983b-0bb4811603ba")
+			(uuid "146be510-2756-44bc-be6c-a5cf277b484f")
 		)
 		(fp_line
 			(start 1.397 -0.9024)
@@ -15205,7 +15205,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "08cca5a2-6dc2-43f0-8e68-e547f76c1cca")
+			(uuid "6a6955c1-a218-44e9-8763-e08ecc355e67")
 		)
 		(fp_line
 			(start 1.397 -0.5976)
@@ -15215,7 +15215,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "36b80e9f-d759-4a2b-a642-e0671d8dcbca")
+			(uuid "be400610-08f6-46c0-8b2d-b18cc54d9588")
 		)
 		(fp_line
 			(start 1.397 -0.4024)
@@ -15225,7 +15225,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "a6968268-c8b2-4b8d-9079-fc6217164c95")
+			(uuid "712504c2-ee02-429e-8681-1855733d3c72")
 		)
 		(fp_line
 			(start 1.397 -0.0976)
@@ -15235,7 +15235,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "87eb1b9e-34d9-468c-9efb-e25aa1e78c19")
+			(uuid "da5c2591-9ab7-45d9-9221-3c94a00be111")
 		)
 		(fp_line
 			(start 1.397 0.0976)
@@ -15245,7 +15245,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "dce89d83-9e40-41cf-abfc-63a8bc42d0cc")
+			(uuid "2be864ae-da49-438f-863d-a8eac030e217")
 		)
 		(fp_line
 			(start 1.397 0.4024)
@@ -15255,7 +15255,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "fba16687-194c-4a01-9ccc-98ea7e25692c")
+			(uuid "58625cf1-ff70-4e52-ad62-71ea651ebbf9")
 		)
 		(fp_line
 			(start 1.397 0.5976)
@@ -15265,7 +15265,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "7507618b-6218-4b1d-b01d-aa9c988947ec")
+			(uuid "e37e238d-66af-4590-b486-32f31f2f656f")
 		)
 		(fp_line
 			(start 1.397 0.9024)
@@ -15275,7 +15275,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "8edc4629-5873-4bac-917a-fc25d21b84b5")
+			(uuid "ac11f3fc-61cc-4bec-8687-428211fa6814")
 		)
 		(fp_line
 			(start 1.4986 -1.2446)
@@ -15285,7 +15285,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "973711d8-9f23-4752-b348-3de88d3d0da8")
+			(uuid "49e2c740-241f-4b07-8903-fa5a08419321")
 		)
 		(fp_line
 			(start 1.4986 -1.2446)
@@ -15295,7 +15295,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "a8e42af0-86e9-46f1-9560-c5530184d73c")
+			(uuid "e55ce112-4a88-4cda-896a-a4b8a5d88a28")
 		)
 		(fp_line
 			(start 1.4986 -0.9024)
@@ -15305,7 +15305,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "7fb80f29-3c07-43ff-ba0c-99a6d4546d87")
+			(uuid "b6b00934-1705-42ba-8254-67209f6f6650")
 		)
 		(fp_line
 			(start 1.4986 -0.5976)
@@ -15315,7 +15315,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "71fc6c09-3e9f-4a84-91de-37e0bde4d9c7")
+			(uuid "29cc5f6a-a902-44f0-a7ab-9c7bcca060b9")
 		)
 		(fp_line
 			(start 1.4986 -0.4024)
@@ -15325,7 +15325,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "bc61943f-adf9-44e7-975d-5e167a85b535")
+			(uuid "c6d0c904-9f1d-49e3-80e0-98c154651be6")
 		)
 		(fp_line
 			(start 1.4986 -0.0976)
@@ -15335,7 +15335,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "daed93b6-13ae-47a6-a5cf-dff0b07fe63f")
+			(uuid "b3d34554-d10b-48ef-b253-00cd5c11e8b0")
 		)
 		(fp_line
 			(start 1.4986 0.0976)
@@ -15345,7 +15345,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "9c045f78-1553-4e1c-8da6-7e4c0909b8fb")
+			(uuid "bf8b59fc-fe7a-416b-858a-ac45343e581c")
 		)
 		(fp_line
 			(start 1.4986 0.4024)
@@ -15355,7 +15355,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "2fec5520-7ed6-4b13-a170-1a9cd03867a7")
+			(uuid "5d27c471-dc06-4710-9410-d9e73c2cac09")
 		)
 		(fp_line
 			(start 1.4986 0.5976)
@@ -15365,7 +15365,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "8e058260-d15a-4ba4-8bb4-90575c3b8ebd")
+			(uuid "cc70ea85-b0e2-4569-a841-7999455a3c40")
 		)
 		(fp_line
 			(start 1.4986 0.9024)
@@ -15375,7 +15375,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "25caa0c0-c3d5-46de-8cef-fe935a02fd15")
+			(uuid "758065fa-3e27-4481-8343-2c95a68e63c7")
 		)
 		(fp_line
 			(start 1.4986 1.2446)
@@ -15385,7 +15385,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "40467432-1550-42f4-8d3a-bd7a8c2adace")
+			(uuid "0a3ee1fa-16e2-4ae0-8855-b383e76ccd8b")
 		)
 		(fp_line
 			(start 1.4986 1.2446)
@@ -15395,12 +15395,12 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "f1e008f1-6e95-475a-b8f6-f3e88096a0d7")
+			(uuid "4fe2995e-4620-442c-ada3-37ecca82624c")
 		)
 		(fp_text user "*"
 			(at -2.032 -1 0)
 			(layer "F.SilkS")
-			(uuid "7d5b1ba2-9445-46e3-95a0-41e007cd297d")
+			(uuid "e673f3b5-5754-4562-8c61-a67d24c9818a")
 			(effects
 				(font
 					(size 1 1)
@@ -15412,7 +15412,7 @@
 			(at -2.032 -1 0)
 			(unlocked yes)
 			(layer "F.SilkS")
-			(uuid "e673f3b5-5754-4562-8c61-a67d24c9818a")
+			(uuid "f989b378-2b1c-464d-aa1d-9ebac798c225")
 			(effects
 				(font
 					(size 1 1)
@@ -15424,7 +15424,7 @@
 			(at -0.889 -1 0)
 			(unlocked yes)
 			(layer "F.Fab")
-			(uuid "2d32f699-db48-40dc-90f0-7bcf01d9fe6f")
+			(uuid "26f5e76b-990b-43b3-af6a-26ad56574eaa")
 			(effects
 				(font
 					(size 1 1)
@@ -15641,7 +15641,7 @@
 			(unlocked yes)
 			(layer "F.Fab")
 			(hide yes)
-			(uuid "f7d12ba6-3911-43b2-8b89-7161548ed4b9")
+			(uuid "2e9b6524-ab80-4598-aefe-c4f889583c7e")
 			(effects
 				(font
 					(size 1 1)
@@ -15654,7 +15654,7 @@
 			(unlocked yes)
 			(layer "F.Fab")
 			(hide yes)
-			(uuid "473b980d-ea36-48e3-a658-1f8369019a55")
+			(uuid "b9c0b8ef-aee3-45f9-982d-a97669d868fe")
 			(effects
 				(font
 					(size 1 1)
@@ -15667,7 +15667,7 @@
 			(unlocked yes)
 			(layer "F.Fab")
 			(hide yes)
-			(uuid "83b99c0d-b1ed-470c-86b7-5a376be666ae")
+			(uuid "056c5260-12c1-4985-b1ca-b71a172b4e4d")
 			(effects
 				(font
 					(size 1 1)
@@ -15680,7 +15680,7 @@
 			(unlocked yes)
 			(layer "F.Fab")
 			(hide yes)
-			(uuid "daaaaa3e-bdb1-4f5d-8756-2fe47f61f7d9")
+			(uuid "29277af2-839a-4067-a46e-6883404e1f7f")
 			(effects
 				(font
 					(size 1 1)
@@ -15693,7 +15693,7 @@
 			(unlocked yes)
 			(layer "F.Fab")
 			(hide yes)
-			(uuid "0dbc83ba-a85d-43f3-a5b7-45b80ceca50e")
+			(uuid "58abd908-fa2f-41ab-8b85-15335d365231")
 			(effects
 				(font
 					(size 1 1)
@@ -15703,7 +15703,7 @@
 		)
 		(path "/7273c36a-aae8-4b27-8224-0733fd35a1b8")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -2.4 0.85)
@@ -15713,7 +15713,7 @@
 				(type solid)
 			)
 			(layer "F.SilkS")
-			(uuid "3cae4927-0e7a-4620-86e2-dbef9c982c9a")
+			(uuid "95bfca7a-b291-4ceb-bfc2-4e807df0fa74")
 		)
 		(fp_line
 			(start -2.4 0.85)
@@ -15723,7 +15723,7 @@
 				(type solid)
 			)
 			(layer "F.SilkS")
-			(uuid "983b1364-5c8e-49e2-8785-e4d44eda379f")
+			(uuid "c5fb0e3f-806f-4d42-81f1-aa8b46bfdd08")
 		)
 		(fp_line
 			(start -2.3 0.85)
@@ -15733,7 +15733,7 @@
 				(type solid)
 			)
 			(layer "F.SilkS")
-			(uuid "d1e18cf9-202d-4d67-b034-31b43dc58bff")
+			(uuid "8305440f-f6a0-494e-b13d-34adfe306e11")
 		)
 		(fp_arc
 			(start -2.4 0.85)
@@ -15744,7 +15744,7 @@
 				(type solid)
 			)
 			(layer "F.SilkS")
-			(uuid "713c3682-8ec6-4072-ace4-e751ea6637ba")
+			(uuid "c820eec0-d121-40e4-abd8-1e04dd07609a")
 		)
 		(fp_arc
 			(start -2.3 0.85)
@@ -15755,7 +15755,7 @@
 				(type solid)
 			)
 			(layer "F.SilkS")
-			(uuid "01280d51-a1be-49cc-978b-4555dc4f91b9")
+			(uuid "c9f01186-d723-4ed8-b311-d6f91279731f")
 		)
 		(fp_arc
 			(start -2.3 0.85)
@@ -15766,7 +15766,7 @@
 				(type solid)
 			)
 			(layer "F.SilkS")
-			(uuid "0f73b3ae-7fca-4729-983e-225f0792b97c")
+			(uuid "d1be5ae9-8ba2-4062-a7e5-40a354931c73")
 		)
 		(fp_line
 			(start -2.1 1.75)
@@ -15776,7 +15776,7 @@
 				(type solid)
 			)
 			(layer "F.CrtYd")
-			(uuid "34b10819-2e1c-4f03-bc97-8d46f0461bcf")
+			(uuid "9cd399a5-5e6a-49ea-84b4-c83e58446025")
 		)
 		(fp_line
 			(start 2.1 1.75)
@@ -15786,7 +15786,7 @@
 				(type solid)
 			)
 			(layer "F.CrtYd")
-			(uuid "e1c59900-9ed1-4cd9-b9d6-788d86f20bff")
+			(uuid "242981da-0e3f-4a45-b56f-c7121652ceba")
 		)
 		(fp_line
 			(start -2.1 -1.75)
@@ -15796,7 +15796,7 @@
 				(type solid)
 			)
 			(layer "F.CrtYd")
-			(uuid "d4e4ee9e-59b3-470f-b9e4-6f500eeb3eb6")
+			(uuid "aa58f435-3795-43a4-92d9-a7c7ac01e6d5")
 		)
 		(fp_line
 			(start 2.1 -1.75)
@@ -15806,7 +15806,7 @@
 				(type solid)
 			)
 			(layer "F.CrtYd")
-			(uuid "f3eaba33-2722-4bcd-975d-d393a1e6043a")
+			(uuid "d3311c36-bac5-4609-825c-70ea16df1b48")
 		)
 		(fp_line
 			(start -1.6 1.25)
@@ -15816,7 +15816,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "f7654069-0b0e-44b0-ac89-5de58793dcc2")
+			(uuid "88f11233-df48-43d4-b7c5-70ef5696d80e")
 		)
 		(fp_line
 			(start 1.6 1.25)
@@ -15826,7 +15826,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "e3e24bdc-26a0-436c-893d-7a440c40d534")
+			(uuid "3b89ad29-5804-4832-a562-92b053dd61e7")
 		)
 		(fp_line
 			(start -1.6 -1.25)
@@ -15836,7 +15836,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "a38b823e-b1a9-4fff-b2db-53e6a75219f8")
+			(uuid "5cbbc8a3-c043-4c46-a99c-4e79673ac5e4")
 		)
 		(fp_line
 			(start 1.6 -1.25)
@@ -15846,7 +15846,7 @@
 				(type solid)
 			)
 			(layer "F.Fab")
-			(uuid "d448d215-d119-403f-9bb8-9411d1685c04")
+			(uuid "d06f6f9c-c537-4bd4-827c-0d023bc1df4d")
 		)
 		(fp_text user "${REFERENCE}"
 			(at 0 0 270)
@@ -15964,7 +15964,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/85943160-70c3-4b25-9d6f-6b6657712210")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 -0.51)
@@ -16164,7 +16164,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/b2ad2207-ecb6-42c9-9b6a-f2184d5b0c0a")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.237258 -0.5225)
@@ -16377,7 +16377,7 @@
 		(property ki_fp_filters "LED* LED_SMD:* LED_THT:*")
 		(path "/c2d156ec-646e-4cc6-b9ff-f665a43a6a81")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_circle
 			(center -1.265 0)
@@ -16590,7 +16590,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/8671f82b-e48e-49bd-9b62-37f57270692e")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.237258 -0.5225)
@@ -16790,7 +16790,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/29868c21-69d6-4b76-9087-8d9838b8050d")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 0.51)
@@ -16990,7 +16990,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/f6a281fc-b6bc-48cd-995d-479c8b25f431")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.261252 -0.735)
@@ -17190,7 +17190,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/b4e79356-0a99-49aa-82e8-33c893d37bb4")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.237258 -0.5225)
@@ -17390,7 +17390,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/c36d865a-ac95-41db-a680-6af2b88ea0af")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.237258 -0.5225)
@@ -17589,7 +17589,7 @@
 		(property ki_fp_filters "LQFP*14x14mm*P0.5mm*")
 		(path "/340091f0-bfe1-4738-968e-5c7f8f06e156")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -7.11 -7.11)
@@ -18975,7 +18975,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/fd952e72-903e-4884-afb5-57f97f172f34")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 0.51)
@@ -19175,7 +19175,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/ecdf23e1-a9eb-49a6-aa80-686cf5362936")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 -0.51)
@@ -19375,7 +19375,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/b359b7a2-3270-40c5-8723-d877c48c2bbd")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.237258 0.5225)
@@ -19575,7 +19575,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/f73b66da-6561-4d70-a10d-075e055bffd8")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.237258 -0.5225)
@@ -19779,7 +19779,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/ad94c234-68aa-4dbe-967b-b0e757c0d8af")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.153641 -0.38)
@@ -19984,7 +19984,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/665a6fc2-36bc-4a62-969b-5f2149877199")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.153641 0.38)
@@ -20189,7 +20189,7 @@
 		(property ki_fp_filters "C_*")
 		(path "/71f06f03-dead-4f15-babc-08cd5bda6fb6")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.14058 0.51)
@@ -20394,7 +20394,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/38c84974-cbc3-42e8-a321-9d56be1a9347")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.237258 0.5225)
@@ -20599,7 +20599,7 @@
 		(property ki_fp_filters "R_*")
 		(path "/0ddbfade-a5d5-4fe1-95aa-892e47b3a787")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start -0.153641 0.38)
@@ -20803,7 +20803,7 @@
 		(property ki_fp_filters "*SOIC*5.3x5.3mm*P1.27mm*")
 		(path "/83947b70-04ce-449a-aa85-a7324d868411")
 		(sheetname "/")
-		(sheetfile "HealthMonitor_PCB.kicad_sch")
+		(sheetfile "HM-Collector-Rev1.kicad_sch")
 		(attr smd)
 		(fp_line
 			(start 2.76 2.76)
