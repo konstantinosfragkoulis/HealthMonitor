@@ -333,3 +333,5 @@ ipython_config.py
 # Jupyter lab virtual documents
 # https://jupyterlab-lsp.readthedocs.io/en/2.x/Configuring.html#virtual_documents_dir
 .virtual_documents/
+
+.DS_Store
