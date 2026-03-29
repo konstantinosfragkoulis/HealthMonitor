@@ -221,7 +221,7 @@ int main(void)
   uint8_t who_am_i = 0;
   IMU_ReadReg(ST1VAFE6AX_REG_WHO_AM_I, &who_am_i);
   HAL_Delay(10);
-  if (who_am_i == ST1VAFE6AX_WHO_AM_I_VALUE) {
+  if (who_am_i != ST1VAFE6AX_WHO_AM_I_VALUE) {
     while(1) {
       HAL_GPIO_TogglePin(GPIOB, LED_1_Pin);
       HAL_Delay(200);
