@@ -166,21 +166,22 @@ static float compute_mean_rr(void)
   return (cnt > 0U) ? ((float) sum / (float) cnt) : 0.0f;
 }
 
-/* Update BPM and RMSSD estimates after a confirmed R-peak */
-static void calculate_biometrics(uint32_t peak_ts, HeartBeatEvent_t *event)
+/* Update BPM and RMSSD estimates after a confirmed R-peak.
+ * Returns 1 if biometrics were populated, 0 if not enough data yet. */
+static uint8_t calculate_biometrics(HeartBeatEvent_t *event)
 {
   if (last_valid_peak == 0U)
   {
-    last_valid_peak = peak_ts;
-    return;
+    last_valid_peak = event->timestamp;
+    return 0U;
   }
 
-  uint32_t curr_rr = peak_ts - last_valid_peak;
+  uint32_t curr_rr = event->timestamp - last_valid_peak;
 
   if (curr_rr < MIN_RR_TICKS || curr_rr > MAX_RR_TICKS)
-    return;
+    return 0U;
 
-  last_valid_peak = peak_ts;
+  last_valid_peak = event->timestamp;
 
   rr_history[rr_head] = curr_rr;
   rr_head = (uint8_t) ((rr_head + 1U) & RR_MASK);
@@ -226,6 +227,8 @@ static void calculate_biometrics(uint32_t peak_ts, HeartBeatEvent_t *event)
   {
     event->rmssd = (uint16_t) sqrtf(sq_sum / (float) diff_n);
   }
+
+  return 1U;
 }
 
 /* Scan MWI history for the highest peak in [start_ts, end_ts] */
@@ -299,7 +302,7 @@ uint8_t ECG_Process_Sample(RawECG_t sample, HeartBeatEvent_t *out_event)
   lp_w2 = LP_B2 * hp_y - LP_A2 * bp;
 
   /* Five-point derivative */
-  float d = 0.125f * (2.0f * bp + der_x1 - der_x3 - 2.0f * der_x4);
+  float d = 0.125f * (bp + 2.0f * der_x1 - 2.0f * der_x3 - der_x4);
   der_x4 = der_x3;
   der_x3 = der_x2;
   der_x2 = der_x1;
@@ -364,12 +367,18 @@ uint8_t ECG_Process_Sample(RawECG_t sample, HeartBeatEvent_t *out_event)
       /* Candidate peak */
       uint8_t is_r_peak = 1U;
 
-      if (time_since_last <= T_WAVE_TICKS && rr_count >= 1U)
+      if (rr_count >= 1U)
       {
-        if (local_max_slope < T_WAVE_SLOPE_RATIO * last_peak_slope)
+        float mean_rr_val = compute_mean_rr();
+        if (time_since_last <= T_WAVE_TICKS
+            || (mean_rr_val > 0.0f
+                && (float) time_since_last <= 0.5f * mean_rr_val))
         {
-          noise_peak = RULE1_ALPHA * local_max + RULE1_BETA * noise_peak;
-          is_r_peak = 0U;
+          if (local_max_slope < T_WAVE_SLOPE_RATIO * last_peak_slope)
+          {
+            noise_peak = RULE1_ALPHA * local_max + RULE1_BETA * noise_peak;
+            is_r_peak = 0U;
+          }
         }
       }
 
@@ -380,10 +389,13 @@ uint8_t ECG_Process_Sample(RawECG_t sample, HeartBeatEvent_t *out_event)
         last_peak_time = local_max_ts;
 
         out_event->timestamp = local_max_ts;
-        calculate_biometrics(local_max_ts, out_event);
+        uint8_t biometrics_ok = calculate_biometrics(out_event);
+
+        threshold1 = noise_peak + 0.25f * (signal_peak - noise_peak);
+        threshold2 = 0.4f * threshold1;
 
         prev_mwi = mwi_out;
-        return 1U;
+        return biometrics_ok;
       }
 
     }
@@ -429,8 +441,8 @@ uint8_t ECG_Process_Sample(RawECG_t sample, HeartBeatEvent_t *out_event)
 
       if (search_back(sb_start, sb_end, thresh_sb, out_event))
       {
-        calculate_biometrics(out_event->timestamp, out_event);
-        return 1U;
+        if (calculate_biometrics(out_event))
+          return 1U;
       }
     }
   }

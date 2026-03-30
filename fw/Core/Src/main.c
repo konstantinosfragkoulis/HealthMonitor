@@ -174,6 +174,7 @@ int main(void)
   static uint32_t led_timer = 0;
   static uint8_t led_on = 0;
   static uint8_t peak_flag = 0;
+  static uint8_t prev_leads_off = 1;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -297,6 +298,10 @@ int main(void)
         { 0 };
       uint8_t leads_off = HAL_GPIO_ReadPin(ECG_LOP_GPIO_Port, ECG_LOP_Pin)
           || HAL_GPIO_ReadPin(ECG_LON_GPIO_Port, ECG_LON_Pin);
+
+      if (prev_leads_off && !leads_off)
+        ECG_Reset();
+      prev_leads_off = leads_off;
 
       if (!leads_off && ECG_Process_Sample(ecg_sample, &latest_beat) == 1)
       {
