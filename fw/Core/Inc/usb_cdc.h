@@ -9,14 +9,10 @@
 #define INC_USB_CDC_H_
 
 #include <stdint.h>
-#include <stddef.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-void USB_Print(const char* str);
-void USB_Write(const uint8_t* buf, size_t len);
 
 uint32_t tusb_time_millis_api(void);
 

@@ -8,31 +8,11 @@
 #include "tusb.h"
 #include "usb_cdc.h"
 #include "stm32u5xx_hal.h"
-#include <string.h>
 
 /* Required by TinyUSB for internal timing. */
 uint32_t tusb_time_millis_api(void)
 {
   return HAL_GetTick();
-}
-
-void USB_Print(const char *str)
-{
-  if (!tud_cdc_connected())
-    return;
-
-  uint32_t len = (uint32_t) strlen(str);
-  tud_cdc_write(str, len);
-  tud_cdc_write_flush();
-}
-
-void USB_Write(const uint8_t *buf, size_t len)
-{
-  if (!tud_cdc_connected())
-    return;
-
-  tud_cdc_write(buf, (uint32_t) len);
-  tud_cdc_write_flush();
 }
 
 /* CDC class callbacks */

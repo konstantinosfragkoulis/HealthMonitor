@@ -16,16 +16,13 @@
 extern "C" {
 #endif
 
-/*
- * Process one ECG sample through the Pan-Tompkins++ pipeline.
- * Call once per sample at 480 Hz from the main loop (not from ISR).
- * Returns 1 if an R-peak was detected, 0 otherwise.
- * out_event is only valid when the return value is 1.
- */
+/* Run one sample through the PT++ pipeline at 480 Hz. Returns 1 on R-peak. */
 uint8_t ECG_Process_Sample(RawECG_t sample, HeartBeatEvent_t *out_event);
 
-/* Reset all filter/threshold state. Next call to ECG_Process_Sample()
- * will behave as if the device just booted. */
+/* Returns 1 if a new HRV report is ready (every 32 beats). */
+uint8_t ECG_Get_HRV_Report(HRVReport_t *report);
+
+/* Reset all filter and threshold state. */
 void ECG_Reset(void);
 
 #ifdef __cplusplus

@@ -12,19 +12,10 @@
  *
  * All timing constants are derived from these two values.
  *
- * Pipeline (per sample):
- *   raw ADC → [bandpass 5–18 Hz] → [5-pt derivative] → [squaring]
- *           → [flattop FIR] → [MWI] → [PT++ decision + search-back]
+ * Pipeline: bandpass 5-18 Hz -> 5pt derivative -> squaring -> flattop FIR
+ *           -> MWI -> PT++ decision logic + search-back
  *
- * Static memory budget (~8.8 KB in .bss):
- *   MWI history   (float    × 1024) :  4096 B
- *   MWI timestamps(uint32_t × 1024) :  4096 B
- *   Flattop FIR   (float    ×   29) :   116 B
- *   MWI buffer    (float    ×   72) :   288 B
- *   Slope buffer  (float    ×   34) :   136 B
- *   Miscellaneous                   :   ~64 B
- *   ─────────────────────────────────────────
- *   Total                           : ~8.8 KB  (STM32U595 has 786 KB SRAM)
+ * ~9 KB .bss (mostly the MWI history ring buffers)
  *
  *  Created on: Mar 14, 2026
  *      Author: konstantinos
@@ -36,6 +27,7 @@
 
 #include "data_types.h"
 #include "ecg_dsp.h"
+#include "hrv.h"
 
 #define FS                  480.0f          /* Sample rate (Hz)                  */
 #define SAMPLES_PER_TICK    (FS / 10000.0f) /* 0.048 samples per TIM2 tick       */
@@ -45,18 +37,21 @@
 #define MWI_SIZE            72U     /* 150 ms — moving window integration        */
 #define SLOPE_WIN_SIZE      34U     /* 70 ms  — T-wave slope comparison window   */
 
-/* Timing thresholds in TIM2 ticks (10 kHz → 1 tick = 0.1 ms) */
+/* Timing thresholds in TIM2 ticks (10 kHz -> 1 tick = 0.1 ms) */
 #define REFRACTORY_TICKS    2310U   /* 231 ms — max 260 BPM (PT++ refractory)    */
 #define T_WAVE_TICKS        3600U   /* 360 ms — T-wave discrimination window     */
 #define SEARCH_10S_TICKS    10000U  /* 1.0 s  — short search-back threshold      */
 #define SEARCH_14S_TICKS    14000U  /* 1.4 s  — long search-back threshold       */
 #define SB_COOLDOWN_TICKS   REFRACTORY_TICKS /* Min gap between search-back runs */
 
-#define MIN_RR_TICKS        2310U   /* 231 ms → 260 BPM max                      */
-#define MAX_RR_TICKS        20000U  /* 2000 ms → 30 BPM min                      */
+#define MIN_RR_TICKS        2310U   /* 231 ms -> 260 BPM max                      */
+#define MAX_RR_TICKS        20000U  /* 2000 ms -> 30 BPM min                      */
 
-#define RR_HISTORY_SIZE     8U
+#define RR_HISTORY_SIZE     32U
 #define RR_MASK             (RR_HISTORY_SIZE - 1U)
+#define T_WAVE_RR_COUNT     8U      /* PT++ specifies 8 most recent beats for T-wave */
+
+#define HRV_REPORT_INTERVAL RR_HISTORY_SIZE  /* Emit HRV report every N beats */
 
 /* MWI output history for search-back. Must be a power of 2 >= 1.4 s × 480 Hz = 672 samples */
 #define MWI_HIST_SIZE       1024U
@@ -125,6 +120,10 @@ static uint32_t last_valid_peak;
 
 static uint8_t initialized;
 
+static uint8_t hrv_beat_count;
+static uint8_t hrv_report_ready;
+static HRVReport_t hrv_report;
+
 static void init_flattop(void)
 {
   /* Coefficients from the PT++ paper */
@@ -135,7 +134,7 @@ static void init_flattop(void)
   const float a4 = 0.00694737f;
   float norm = 0.0f;
 
-  for (int i = 0; i < (int) FLATTOP_SIZE; ++i)
+  for (uint8_t i = 0U; i < FLATTOP_SIZE; ++i)
   {
     float psi = (2.0f * (float) M_PI * (float) i) / (float) (FLATTOP_SIZE - 1U);
     flattop_w[i] = a0 - a1 * cosf(psi) + a2 * cosf(2.0f * psi)
@@ -144,7 +143,7 @@ static void init_flattop(void)
   }
 
   float inv_norm = 1.0f / norm;
-  for (int i = 0; i < (int) FLATTOP_SIZE; ++i)
+  for (uint8_t i = 0U; i < FLATTOP_SIZE; ++i)
   {
     flattop_w[i] *= inv_norm;
   }
@@ -166,8 +165,25 @@ static float compute_mean_rr(void)
   return (cnt > 0U) ? ((float) sum / (float) cnt) : 0.0f;
 }
 
-/* Update BPM and RMSSD estimates after a confirmed R-peak.
- * Returns 1 if biometrics were populated, 0 if not enough data yet. */
+/* Mean of the N most recent RR intervals */
+static float compute_recent_mean_rr(uint8_t n)
+{
+  uint32_t sum = 0U;
+  uint8_t cnt = 0U;
+
+  for (uint8_t i = 0U; i < n; ++i)
+  {
+    uint8_t idx = (uint8_t) ((rr_head - 1U - i + RR_HISTORY_SIZE) & RR_MASK);
+    if (rr_history[idx] != 0U)
+    {
+      sum += rr_history[idx];
+      cnt++;
+    }
+  }
+  return (cnt > 0U) ? ((float) sum / (float) cnt) : 0.0f;
+}
+
+/* Update BPM and RR history after a confirmed R-peak */
 static uint8_t calculate_biometrics(HeartBeatEvent_t *event)
 {
   if (last_valid_peak == 0U)
@@ -178,7 +194,13 @@ static uint8_t calculate_biometrics(HeartBeatEvent_t *event)
 
   uint32_t curr_rr = event->timestamp - last_valid_peak;
 
-  if (curr_rr < MIN_RR_TICKS || curr_rr > MAX_RR_TICKS)
+  if (curr_rr > MAX_RR_TICKS)
+  {
+    /* Gap too long, reset baseline */
+    last_valid_peak = event->timestamp;
+    return 0U;
+  }
+  if (curr_rr < MIN_RR_TICKS)
     return 0U;
 
   last_valid_peak = event->timestamp;
@@ -187,6 +209,18 @@ static uint8_t calculate_biometrics(HeartBeatEvent_t *event)
   rr_head = (uint8_t) ((rr_head + 1U) & RR_MASK);
   if (rr_count < RR_HISTORY_SIZE)
     rr_count++;
+
+  /* HRV report every N beats */
+  hrv_beat_count++;
+  if (hrv_beat_count >= HRV_REPORT_INTERVAL && rr_count >= RR_HISTORY_SIZE)
+  {
+    if (HRV_Compute(rr_history, RR_HISTORY_SIZE, rr_head, rr_count,
+                    0U, event->timestamp, &hrv_report))
+    {
+      hrv_report_ready = 1U;
+    }
+    hrv_beat_count = 0U;
+  }
 
   /* BPM: 1 min = 60 000 ms = 600 000 ticks at 10 kHz */
   uint32_t rr_sum = 0U;
@@ -202,30 +236,7 @@ static uint8_t calculate_biometrics(HeartBeatEvent_t *event)
   if (valid > 0U)
   {
     float avg_rr = (float) rr_sum / (float) valid;
-    float avg_bpm = 600000.0f / avg_rr;
-    event->bpm = (int16_t) (avg_bpm * 10.0f);
-  }
-
-  /**
-   * RR values are in TIM2 ticks (10 kHz), so RMSSD in ticks equals
-   * RMSSD_ms * 10. Exactly the x10 scaling that we want.
-   */
-  float sq_sum = 0.0f;
-  uint8_t diff_n = 0U;
-  for (uint8_t i = 0U; i < RR_HISTORY_SIZE - 1U; ++i)
-  {
-    uint8_t a = (uint8_t) ((rr_head - 1U - i + RR_HISTORY_SIZE) & RR_MASK);
-    uint8_t b = (uint8_t) ((rr_head - 2U - i + RR_HISTORY_SIZE) & RR_MASK);
-    if (rr_history[a] != 0U && rr_history[b] != 0U)
-    {
-      int32_t d = (int32_t) rr_history[a] - (int32_t) rr_history[b];
-      sq_sum += (float) (d * d);
-      diff_n++;
-    }
-  }
-  if (diff_n > 0U)
-  {
-    event->rmssd = (uint16_t) sqrtf(sq_sum / (float) diff_n);
+    event->bpm = (int16_t) (6000000.0f / avg_rr);
   }
 
   return 1U;
@@ -240,12 +251,12 @@ static uint8_t search_back(uint32_t start_ts, uint32_t end_ts, float thresh,
   uint32_t window = end_ts - start_ts;
 
   /* Search at most 1.4 s of history plus some margin */
-  uint32_t _max = (uint32_t) ((float) SEARCH_14S_TICKS * SAMPLES_PER_TICK)
+  uint32_t max_lookback = (uint32_t) ((float) SEARCH_14S_TICKS * SAMPLES_PER_TICK)
       + 10U;
-  if (_max > MWI_HIST_SIZE - 1U)
-    _max = MWI_HIST_SIZE - 1U;
+  if (max_lookback > MWI_HIST_SIZE - 1U)
+    max_lookback = MWI_HIST_SIZE - 1U;
 
-  for (uint32_t i = 1U; i <= _max; ++i)
+  for (uint32_t i = 1U; i <= max_lookback; ++i)
   {
     uint32_t idx = (sample_count - i) & MWI_HIST_MASK;
     uint32_t ts = mwi_ts_history[idx];
@@ -369,7 +380,7 @@ uint8_t ECG_Process_Sample(RawECG_t sample, HeartBeatEvent_t *out_event)
 
       if (rr_count >= 1U)
       {
-        float mean_rr_val = compute_mean_rr();
+        float mean_rr_val = compute_recent_mean_rr(T_WAVE_RR_COUNT);
         if (time_since_last <= T_WAVE_TICKS
             || (mean_rr_val > 0.0f
                 && (float) time_since_last <= 0.5f * mean_rr_val))
@@ -450,6 +461,15 @@ uint8_t ECG_Process_Sample(RawECG_t sample, HeartBeatEvent_t *out_event)
   return 0U;
 }
 
+uint8_t ECG_Get_HRV_Report(HRVReport_t *report)
+{
+  if (!hrv_report_ready)
+    return 0U;
+  *report = hrv_report;
+  hrv_report_ready = 0U;
+  return 1U;
+}
+
 void ECG_Reset(void)
 {
   hp_w1 = 0.0f;
@@ -495,6 +515,9 @@ void ECG_Reset(void)
   rr_head = 0U;
   rr_count = 0U;
   last_valid_peak = 0U;
+
+  hrv_beat_count = 0U;
+  hrv_report_ready = 0U;
 
   initialized = 0U;
 }

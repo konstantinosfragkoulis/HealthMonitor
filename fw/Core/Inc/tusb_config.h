@@ -70,7 +70,7 @@
 #define CFG_TUD_ENDPOINT0_SIZE   64
 
 //------------- CLASS -------------//
-#define CFG_TUD_CDC              1   // One CDC interface  → Virtual COM Port
+#define CFG_TUD_CDC              1   // One CDC interface -> Virtual COM Port
 #define CFG_TUD_MSC              0
 #define CFG_TUD_HID              0
 #define CFG_TUD_MIDI             0

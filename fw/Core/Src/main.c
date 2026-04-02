@@ -22,7 +22,6 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include <string.h>
-#include <math.h>
 
 #include "tusb.h"
 #include "usb_cdc.h"
@@ -44,6 +43,8 @@
 /* --- Telemetry protocol --- */
 #define TELEMETRY_HEADER    0xAABBU
 #define EVENT_HEADER        0xCCDDU
+#define BREATH_HEADER       0xEEFFU
+#define HRV_HEADER          0xFFAAU
 
 /* --- FIFO sizes (must be powers of 2) --- */
 #define SENSOR_FIFO_SIZE    16U
@@ -76,14 +77,17 @@ PCD_HandleTypeDef hpcd_USB_OTG_HS;
 /* USER CODE BEGIN PV */
 
 /*
- * SPI TX buffer for reading 6 bytes of accelerometer output.
+ * SPI TX buffer for reading 12 bytes of gyroscope + accelerometer output.
  *
  * The first byte is the register address with the read bit set.
- * Bytes 1-6 are dummies clocked out while the IMU shifts data back.
- * Registers 0x28..0x2D map to: Z_L, Z_H, Y_L, Y_H, X_L, X_H.
+ * Bytes 1-12 are dummies clocked out while the IMU shifts data back.
+ * Starting at OUTX_L_G (0x22), registers are contiguous through 0x2D:
+ *   0x22..0x27: Gyro  X_L, X_H, Y_L, Y_H, Z_L, Z_H
+ *   0x28..0x2D: Accel Z_L, Z_H, Y_L, Y_H, X_L, X_H
  */
-static uint8_t imu_tx[7] =
-  { ST1VAFE6AX_REG_OUTZ_L_A | ST1VAFE6AX_READ_BIT, 0, 0, 0, 0, 0, 0 };
+static uint8_t imu_tx[13] =
+  { ST1VAFE6AX_REG_OUTX_L_G | ST1VAFE6AX_READ_BIT,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
 volatile uint8_t system_ready = 0;
 
@@ -173,7 +177,6 @@ int main(void)
   /* USER CODE BEGIN 1 */
   static uint32_t led_timer = 0;
   static uint8_t led_on = 0;
-  static uint8_t peak_flag = 0;
   static uint8_t prev_leads_off = 1;
   /* USER CODE END 1 */
 
@@ -222,13 +225,14 @@ int main(void)
   uint8_t who_am_i = 0;
   IMU_ReadReg(ST1VAFE6AX_REG_WHO_AM_I, &who_am_i);
   HAL_Delay(10);
-  if (who_am_i != ST1VAFE6AX_WHO_AM_I_VALUE) {
-    while(1) {
+  if (who_am_i != ST1VAFE6AX_WHO_AM_I_VALUE)
+  {
+    while(1)
+    {
       HAL_GPIO_TogglePin(GPIOB, LED_1_Pin);
       HAL_Delay(200);
     }
   }
-
 
   /*
    * CTRL4: Enable pulsed data-ready mode (75 us pulses).
@@ -239,7 +243,7 @@ int main(void)
   IMU_WriteReg(ST1VAFE6AX_REG_CTRL4, ST1VAFE6AX_CTRL4_DRDY_PULSED);
   HAL_Delay(10);
 
-  /* INT1_CTRL: Route accelerometer data-ready to the INT1 pin. */
+  /* INT1_CTRL: Route accelerometer data-ready to the INT1 pin */
   IMU_WriteReg(ST1VAFE6AX_REG_INT1_CTRL, ST1VAFE6AX_INT1_DRDY_XL);
   HAL_Delay(10);
 
@@ -250,9 +254,19 @@ int main(void)
   IMU_WriteReg(ST1VAFE6AX_REG_CTRL1, ST1VAFE6AX_ODR_XL_480HZ);
   HAL_Delay(10);
 
+  /*
+   * CTRL2: High-performance mode (default OP_MODE_G = 000) with
+   * gyroscope ODR = 480 Hz. Full-scale defaults to +/-125 dps (CTRL6 = 0x00),
+   * which gives 4.375 mdps/LSB -- optimal sensitivity for GCG.
+   */
+  IMU_WriteReg(ST1VAFE6AX_REG_CTRL2, ST1VAFE6AX_ODR_G_480HZ);
+  HAL_Delay(10);
+
   HAL_TIM_Base_Start(&htim2);
 
   tusb_init();
+
+  IMU_Init();
 
   /* Now we can start reading from the IMU and ADC */
   system_ready = 1;
@@ -281,21 +295,27 @@ int main(void)
 
       RawIMU_t imu_sample;
       imu_sample.timestamp = sensor_fifo[sensor_fifo_tail].timestamp;
-      imu_sample.x = (int16_t) ((sensor_fifo[sensor_fifo_tail].imu[6] << 8)
-          | sensor_fifo[sensor_fifo_tail].imu[5]);
-      imu_sample.y = (int16_t) ((sensor_fifo[sensor_fifo_tail].imu[4] << 8)
-          | sensor_fifo[sensor_fifo_tail].imu[3]);
-      imu_sample.z = (int16_t) ((sensor_fifo[sensor_fifo_tail].imu[2] << 8)
+      /* Gyroscope: OUTX_L_G(0x22)..OUTZ_H_G(0x27) -> imu[1..6] */
+      imu_sample.gx = (int16_t) ((sensor_fifo[sensor_fifo_tail].imu[2] << 8)
           | sensor_fifo[sensor_fifo_tail].imu[1]);
-      imu_sample.reserved = 0;
+      imu_sample.gy = (int16_t) ((sensor_fifo[sensor_fifo_tail].imu[4] << 8)
+          | sensor_fifo[sensor_fifo_tail].imu[3]);
+      imu_sample.gz = (int16_t) ((sensor_fifo[sensor_fifo_tail].imu[6] << 8)
+          | sensor_fifo[sensor_fifo_tail].imu[5]);
+      /* Accelerometer: OUTZ_L_A(0x28)..OUTX_H_A(0x2D) -> imu[7..12] */
+      imu_sample.ax = (int16_t) ((sensor_fifo[sensor_fifo_tail].imu[12] << 8)
+          | sensor_fifo[sensor_fifo_tail].imu[11]);
+      imu_sample.ay = (int16_t) ((sensor_fifo[sensor_fifo_tail].imu[10] << 8)
+          | sensor_fifo[sensor_fifo_tail].imu[9]);
+      imu_sample.az = (int16_t) ((sensor_fifo[sensor_fifo_tail].imu[8] << 8)
+          | sensor_fifo[sensor_fifo_tail].imu[7]);
 
       /* Release the FIFO slot */
       sensor_fifo[sensor_fifo_tail].status = 0;
       sensor_fifo_tail = (sensor_fifo_tail + 1) & (SENSOR_FIFO_SIZE - 1);
 
       /* Run DSP pipelines */
-      HeartBeatEvent_t latest_beat =
-        { 0 };
+      HeartBeatEvent_t latest_beat = { 0 };
       uint8_t leads_off = HAL_GPIO_ReadPin(ECG_LOP_GPIO_Port, ECG_LOP_Pin)
           || HAL_GPIO_ReadPin(ECG_LON_GPIO_Port, ECG_LON_Pin);
 
@@ -308,28 +328,101 @@ int main(void)
         HAL_GPIO_WritePin(GPIOB, LED_3_Pin, GPIO_PIN_SET);
         led_timer = HAL_GetTick();
         led_on = 1;
-        peak_flag = 1;
 
         /*
-         * Send the biometrics packet immediately.
-         * The fields bpm, timestamp, and rmssd are populated by the `ECG_Process_Sample()` function
+         * Send the heartbeat event immediately.
+         * bpm and timestamp are populated by ECG_Process_Sample().
          */
         if (tud_cdc_connected()
-            && tud_cdc_write_available() >= (sizeof(HeartBeatEvent_t)))
+            && tud_cdc_write_available() >= sizeof(HeartBeatEvent_t))
         {
           latest_beat.header = EVENT_HEADER;
-          latest_beat.reserved = 0;
+          latest_beat.source = 0; /* ECG */
+          memset(latest_beat.reserved, 0, sizeof(latest_beat.reserved));
           latest_beat.crc = 0;
-          latest_beat.crc = (uint8_t) HAL_CRC_Calculate(
-              &hcrc, (uint32_t*) &latest_beat, sizeof(HeartBeatEvent_t) - 1);
+          latest_beat.crc = HAL_CRC_Calculate(
+              &hcrc, (uint32_t*) &latest_beat,
+              sizeof(HeartBeatEvent_t) - sizeof(uint32_t));
 
           tud_cdc_write((uint8_t*) &latest_beat, sizeof(HeartBeatEvent_t));
           tud_cdc_write_flush();
         }
+      }
 
+      /* ECG HRV report (every 32 ECG beats) */
+      HRVReport_t ecg_hrv = { 0 };
+      if (ECG_Get_HRV_Report(&ecg_hrv))
+      {
+        if (tud_cdc_connected()
+            && tud_cdc_write_available() >= sizeof(HRVReport_t))
+        {
+          ecg_hrv.header = HRV_HEADER;
+          ecg_hrv.crc = 0;
+          ecg_hrv.crc = HAL_CRC_Calculate(
+              &hcrc, (uint32_t*) &ecg_hrv,
+              sizeof(HRVReport_t) - sizeof(uint32_t));
+
+          tud_cdc_write((uint8_t*) &ecg_hrv, sizeof(HRVReport_t));
+          tud_cdc_write_flush();
+        }
       }
 
       IMU_Process_Sample(imu_sample);
+
+      /* SCG heartbeat event */
+      HeartBeatEvent_t scg_beat = { 0 };
+      if (IMU_Get_Beat(&scg_beat))
+      {
+        if (tud_cdc_connected()
+            && tud_cdc_write_available() >= sizeof(HeartBeatEvent_t))
+        {
+          scg_beat.header = EVENT_HEADER;
+          memset(scg_beat.reserved, 0, sizeof(scg_beat.reserved));
+          scg_beat.crc = 0;
+          scg_beat.crc = HAL_CRC_Calculate(
+              &hcrc, (uint32_t*) &scg_beat,
+              sizeof(HeartBeatEvent_t) - sizeof(uint32_t));
+
+          tud_cdc_write((uint8_t*) &scg_beat, sizeof(HeartBeatEvent_t));
+          tud_cdc_write_flush();
+        }
+      }
+
+      /* SCG HRV report (every 32 SCG beats) */
+      HRVReport_t scg_hrv = { 0 };
+      if (IMU_Get_HRV_Report(&scg_hrv))
+      {
+        if (tud_cdc_connected()
+            && tud_cdc_write_available() >= sizeof(HRVReport_t))
+        {
+          scg_hrv.header = HRV_HEADER;
+          scg_hrv.crc = 0;
+          scg_hrv.crc = HAL_CRC_Calculate(
+              &hcrc, (uint32_t*) &scg_hrv,
+              sizeof(HRVReport_t) - sizeof(uint32_t));
+
+          tud_cdc_write((uint8_t*) &scg_hrv, sizeof(HRVReport_t));
+          tud_cdc_write_flush();
+        }
+      }
+
+      /* Respiratory rate event */
+      BreathEvent_t breath_evt = { 0 };
+      if (IMU_Get_Breath(&breath_evt))
+      {
+        if (tud_cdc_connected()
+            && tud_cdc_write_available() >= sizeof(BreathEvent_t))
+        {
+          breath_evt.header = BREATH_HEADER;
+          breath_evt.crc = 0;
+          breath_evt.crc = HAL_CRC_Calculate(
+              &hcrc, (uint32_t*) &breath_evt,
+              sizeof(BreathEvent_t) - sizeof(uint32_t));
+
+          tud_cdc_write((uint8_t*) &breath_evt, sizeof(BreathEvent_t));
+          tud_cdc_write_flush();
+        }
+      }
 
       /* Queue a telemetry frame */
       uint8_t next_telemetry_head = (telemetry_fifo_head + 1)
@@ -341,16 +434,17 @@ int main(void)
         pkt->header = TELEMETRY_HEADER;
         pkt->timestamp = ecg_sample.timestamp;
         pkt->ecg = ecg_sample.ecg;
-        pkt->x = imu_sample.x;
-        pkt->y = imu_sample.y;
-        pkt->z = imu_sample.z;
-        pkt->r_peak = peak_flag;
+        pkt->ax = imu_sample.ax;
+        pkt->ay = imu_sample.ay;
+        pkt->az = imu_sample.az;
+        pkt->gx = imu_sample.gx;
+        pkt->gy = imu_sample.gy;
+        pkt->gz = imu_sample.gz;
         pkt->crc = 0;
-        pkt->crc = (uint8_t) HAL_CRC_Calculate(&hcrc, (uint32_t*) pkt,
-                                               sizeof(TelemetryPacket_t) - 1);
+        pkt->crc = HAL_CRC_Calculate(&hcrc, (uint32_t*) pkt,
+                                     sizeof(TelemetryPacket_t) - sizeof(uint32_t));
 
         telemetry_fifo_head = next_telemetry_head;
-        peak_flag = 0;
       }
       /* If the FIFO is full the telemetry packet is dropped. */
     }
@@ -358,7 +452,6 @@ int main(void)
     if (!tud_cdc_connected())
     {
       telemetry_fifo_tail = telemetry_fifo_head;
-      peak_flag = 0;
     }
     else
     {
@@ -967,10 +1060,11 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
   __DSB();
 
   HAL_StatusTypeDef spi_status, adc_status;
-  /* MU: read 6 bytes starting from OUTZ_L_A with DMA */
+  /* IMU: read 12 bytes (gyro + accel) starting from OUTX_L_G with DMA */
   HAL_GPIO_WritePin(GPIOA, IMU_CS_Pin, GPIO_PIN_RESET);
   spi_status = HAL_SPI_TransmitReceive_DMA(&hspi1, (uint8_t*) imu_tx,
-                                           (uint8_t*) sensor_fifo[head].imu, 7);
+                                           (uint8_t*) sensor_fifo[head].imu,
+                                           sizeof(sensor_fifo[head].imu));
 
   if (spi_status != HAL_OK)
   {
