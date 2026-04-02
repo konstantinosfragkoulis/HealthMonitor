@@ -266,6 +266,7 @@ int main(void)
 
   tusb_init();
 
+  ECG_Init();
   IMU_Init();
 
   /* Now we can start reading from the IMU and ADC */
@@ -337,7 +338,7 @@ int main(void)
             && tud_cdc_write_available() >= sizeof(HeartBeatEvent_t))
         {
           latest_beat.header = EVENT_HEADER;
-          latest_beat.source = 0; /* ECG */
+          latest_beat.source = 0U;
           memset(latest_beat.reserved, 0, sizeof(latest_beat.reserved));
           latest_beat.crc = 0;
           latest_beat.crc = HAL_CRC_Calculate(
@@ -377,6 +378,7 @@ int main(void)
             && tud_cdc_write_available() >= sizeof(HeartBeatEvent_t))
         {
           scg_beat.header = EVENT_HEADER;
+          scg_beat.source = 1U;
           memset(scg_beat.reserved, 0, sizeof(scg_beat.reserved));
           scg_beat.crc = 0;
           scg_beat.crc = HAL_CRC_Calculate(

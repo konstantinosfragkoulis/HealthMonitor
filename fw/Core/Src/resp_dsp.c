@@ -13,6 +13,7 @@
  */
 
 #include <math.h>
+#include <string.h>
 
 #include "data_types.h"
 #include "resp_dsp.h"
@@ -76,7 +77,7 @@ static uint8_t decim_count;
 
 static float resp_buf[RESP_BUF_SIZE];
 static uint16_t resp_head;
-static uint16_t resp_sample_count; /* Total decimated samples since reset    */
+static uint16_t resp_sample_count; /* Decimated samples accumulated, capped at RESP_BUF_SIZE */
 static uint16_t resp_update_count; /* Decimated samples since last estimate  */
 
 static BreathEvent_t resp_event;
@@ -213,8 +214,7 @@ void RESP_Reset(void)
 
   decim_count = 0U;
 
-  for (uint16_t i = 0U; i < RESP_BUF_SIZE; ++i)
-    resp_buf[i] = 0.0f;
+  memset(resp_buf, 0, sizeof(resp_buf));
   resp_head = 0U;
   resp_sample_count = 0U;
   resp_update_count = 0U;

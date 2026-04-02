@@ -40,3 +40,9 @@ uint8_t IMU_Get_HRV_Report(HRVReport_t *report)
 {
   return SCG_Get_HRV_Report(report);
 }
+
+void IMU_Reset(void)
+{
+  SCG_Reset();
+  RESP_Reset();
+}

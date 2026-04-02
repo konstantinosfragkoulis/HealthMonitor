@@ -45,11 +45,7 @@
 #define RULE2_A             0.75f    /* EMA fast coefficient (Rule-2, search-back) */
 #define RULE2_B             0.25f    /* EMA slow coefficient (Rule-2, search-back) */
 
-#define RR_HISTORY_SIZE     32U
-#define RR_MASK             (RR_HISTORY_SIZE - 1U)
-#define HRV_REPORT_INTERVAL RR_HISTORY_SIZE
-#define MIN_RR_TICKS        3500U    /* ~350 ms -> 171 BPM                         */
-#define MAX_RR_TICKS        20000U   /* 2000 ms -> 30 BPM                          */
+#define SCG_MIN_RR_TICKS    3500U    /* ~350 ms -> 171 BPM                         */
 
 #define REFRESH_INTERVAL    (60U * SCG_FS)  /* 60 s between template refreshes    */
 #define REFRESH_NCC_THRESH  0.7f     /* Min NCC to accept refreshed template       */
@@ -142,16 +138,10 @@ static uint32_t ncc_ao_ts_history[NCC_HIST_SIZE];
 static uint32_t ncc_sample_count;
 static uint32_t last_sb_time;
 
-static uint32_t ao_rr_history[RR_HISTORY_SIZE];
-static uint8_t ao_rr_head;
-static uint8_t ao_rr_count;
-static uint32_t last_valid_ao;
-static uint8_t ao_hrv_beat_count;
+static BeatTracker_t ao_tracker;
 
 static HeartBeatEvent_t ao_beat_event;
 static uint8_t ao_beat_ready;
-static HRVReport_t ao_hrv_report;
-static uint8_t ao_hrv_ready;
 
 static float bandpass(float x)
 {
@@ -460,79 +450,6 @@ static float compute_ncc(void)
   return (ncc > 0.0f) ? ncc : 0.0f;
 }
 
-/* Returns 1 if biometrics were populated, 0 if not enough data */
-static uint8_t ao_calculate_biometrics(uint32_t ao_ts)
-{
-  if (last_valid_ao == 0U)
-  {
-    last_valid_ao = ao_ts;
-    return 0U;
-  }
-
-  uint32_t curr_rr = ao_ts - last_valid_ao;
-
-  if (curr_rr > MAX_RR_TICKS)
-  {
-    /* Gap too long, reset baseline */
-    last_valid_ao = ao_ts;
-    return 0U;
-  }
-  if (curr_rr < MIN_RR_TICKS)
-    return 0U;
-
-  last_valid_ao = ao_ts;
-
-  ao_rr_history[ao_rr_head] = curr_rr;
-  ao_rr_head = (uint8_t) ((ao_rr_head + 1U) & RR_MASK);
-  if (ao_rr_count < RR_HISTORY_SIZE)
-    ao_rr_count++;
-
-  ao_hrv_beat_count++;
-  if (ao_hrv_beat_count >= HRV_REPORT_INTERVAL && ao_rr_count >= RR_HISTORY_SIZE)
-  {
-    if (HRV_Compute(ao_rr_history, RR_HISTORY_SIZE, ao_rr_head, ao_rr_count,
-                    1U, ao_ts, &ao_hrv_report))
-    {
-      ao_hrv_ready = 1U;
-    }
-    ao_hrv_beat_count = 0U;
-  }
-
-  /* BPM */
-  uint32_t rr_sum = 0U;
-  uint8_t valid = 0U;
-  for (uint8_t i = 0U; i < RR_HISTORY_SIZE; ++i)
-  {
-    if (ao_rr_history[i] != 0U)
-    {
-      rr_sum += ao_rr_history[i];
-      valid++;
-    }
-  }
-  if (valid > 0U)
-  {
-    float avg_rr = (float) rr_sum / (float) valid;
-    ao_beat_event.bpm = (int16_t) (6000000.0f / avg_rr);
-  }
-
-  return 1U;
-}
-
-static float scg_compute_mean_aoao(void)
-{
-  uint32_t sum = 0U;
-  uint8_t cnt = 0U;
-  for (uint8_t i = 0U; i < RR_HISTORY_SIZE; ++i)
-  {
-    if (ao_rr_history[i] != 0U)
-    {
-      sum += ao_rr_history[i];
-      cnt++;
-    }
-  }
-  return (cnt > 0U) ? ((float) sum / (float) cnt) : 0.0f;
-}
-
 /* Search NCC history for missed beats. Returns 1 if a peak was found. */
 static uint8_t scg_search_back(uint32_t current_ts, float thresh,
                                uint32_t *out_ts, float *out_ncc)
@@ -599,8 +516,8 @@ void SCG_Init(void)
   ncc_sample_count = 0U;
   last_sb_time = 0U;
 
+  BeatTracker_Init(&ao_tracker, SCG_MIN_RR_TICKS, 1U);
   ao_beat_ready = 0U;
-  ao_hrv_ready = 0U;
 }
 
 void SCG_Process_Sample(int16_t az, uint32_t timestamp)
@@ -705,8 +622,7 @@ void SCG_Process_Sample(int16_t az, uint32_t timestamp)
           last_ao_time = ao_ts;
 
           ao_beat_event.timestamp = ao_ts;
-          ao_beat_event.source = 1U; /* SCG */
-          if (ao_calculate_biometrics(ao_ts))
+          if (BeatTracker_Update(&ao_tracker, ao_ts, &ao_beat_event.bpm))
             ao_beat_ready = 1U;
         }
         else if (local_max_ncc <= ncc_threshold)
@@ -727,7 +643,7 @@ void SCG_Process_Sample(int16_t az, uint32_t timestamp)
 
         if (sb_cd >= SB_COOLDOWN_TICKS)
         {
-          float mean_aoao = scg_compute_mean_aoao();
+          float mean_aoao = BeatTracker_MeanRR(&ao_tracker);
 
           uint8_t should_search =
               (mean_aoao > 0.0f && (float) ao_gap > SB_TRIGGER_RATIO * mean_aoao)
@@ -751,8 +667,7 @@ void SCG_Process_Sample(int16_t az, uint32_t timestamp)
 
               last_ao_time = found_ts;
               ao_beat_event.timestamp = found_ts;
-              ao_beat_event.source = 1U;
-              if (ao_calculate_biometrics(found_ts))
+              if (BeatTracker_Update(&ao_tracker, found_ts, &ao_beat_event.bpm))
                 ao_beat_ready = 1U;
             }
           }
@@ -828,11 +743,7 @@ uint8_t SCG_Get_Beat(HeartBeatEvent_t *event)
 
 uint8_t SCG_Get_HRV_Report(HRVReport_t *report)
 {
-  if (!ao_hrv_ready)
-    return 0U;
-  *report = ao_hrv_report;
-  ao_hrv_ready = 0U;
-  return 1U;
+  return BeatTracker_GetHRV(&ao_tracker, report);
 }
 
 void SCG_Reset(void)
@@ -846,16 +757,10 @@ void SCG_Reset(void)
   memset(pending_template, 0, sizeof(pending_template));
   memset(scg_ring, 0, sizeof(scg_ring));
   memset(scg_ts_ring, 0, sizeof(scg_ts_ring));
-  memset(ao_rr_history, 0, sizeof(ao_rr_history));
   memset(ncc_history, 0, sizeof(ncc_history));
   memset(ncc_ao_ts_history, 0, sizeof(ncc_ao_ts_history));
 
-  ao_rr_head = 0U;
-  ao_rr_count = 0U;
-  last_valid_ao = 0U;
-  ao_hrv_beat_count = 0U;
   ao_beat_ready = 0U;
-  ao_hrv_ready = 0U;
 
   SCG_Init();
 }

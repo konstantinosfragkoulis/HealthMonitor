@@ -16,6 +16,9 @@
 extern "C" {
 #endif
 
+/* Initialise filters, thresholds, and beat tracker. Call once before processing. */
+void ECG_Init(void);
+
 /* Run one sample through the PT++ pipeline at 480 Hz. Returns 1 on R-peak. */
 uint8_t ECG_Process_Sample(RawECG_t sample, HeartBeatEvent_t *out_event);
 

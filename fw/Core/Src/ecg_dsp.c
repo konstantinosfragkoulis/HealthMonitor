@@ -45,13 +45,7 @@
 #define SB_COOLDOWN_TICKS   REFRACTORY_TICKS /* Min gap between search-back runs */
 
 #define MIN_RR_TICKS        2310U   /* 231 ms -> 260 BPM max                      */
-#define MAX_RR_TICKS        20000U  /* 2000 ms -> 30 BPM min                      */
-
-#define RR_HISTORY_SIZE     32U
-#define RR_MASK             (RR_HISTORY_SIZE - 1U)
 #define T_WAVE_RR_COUNT     8U      /* PT++ specifies 8 most recent beats for T-wave */
-
-#define HRV_REPORT_INTERVAL RR_HISTORY_SIZE  /* Emit HRV report every N beats */
 
 /* MWI output history for search-back. Must be a power of 2 >= 1.4 s × 480 Hz = 672 samples */
 #define MWI_HIST_SIZE       1024U
@@ -113,16 +107,7 @@ static int8_t peak_dir;
 static uint32_t last_peak_time;
 static uint32_t last_sb_time;
 
-static uint32_t rr_history[RR_HISTORY_SIZE];
-static uint8_t rr_head;
-static uint8_t rr_count;
-static uint32_t last_valid_peak;
-
-static uint8_t initialized;
-
-static uint8_t hrv_beat_count;
-static uint8_t hrv_report_ready;
-static HRVReport_t hrv_report;
+static BeatTracker_t ecg_tracker;
 
 static void init_flattop(void)
 {
@@ -147,99 +132,6 @@ static void init_flattop(void)
   {
     flattop_w[i] *= inv_norm;
   }
-}
-
-static float compute_mean_rr(void)
-{
-  uint32_t sum = 0U;
-  uint8_t cnt = 0U;
-
-  for (uint8_t i = 0U; i < RR_HISTORY_SIZE; ++i)
-  {
-    if (rr_history[i] != 0U)
-    {
-      sum += rr_history[i];
-      cnt++;
-    }
-  }
-  return (cnt > 0U) ? ((float) sum / (float) cnt) : 0.0f;
-}
-
-/* Mean of the N most recent RR intervals */
-static float compute_recent_mean_rr(uint8_t n)
-{
-  uint32_t sum = 0U;
-  uint8_t cnt = 0U;
-
-  for (uint8_t i = 0U; i < n; ++i)
-  {
-    uint8_t idx = (uint8_t) ((rr_head - 1U - i + RR_HISTORY_SIZE) & RR_MASK);
-    if (rr_history[idx] != 0U)
-    {
-      sum += rr_history[idx];
-      cnt++;
-    }
-  }
-  return (cnt > 0U) ? ((float) sum / (float) cnt) : 0.0f;
-}
-
-/* Update BPM and RR history after a confirmed R-peak */
-static uint8_t calculate_biometrics(HeartBeatEvent_t *event)
-{
-  if (last_valid_peak == 0U)
-  {
-    last_valid_peak = event->timestamp;
-    return 0U;
-  }
-
-  uint32_t curr_rr = event->timestamp - last_valid_peak;
-
-  if (curr_rr > MAX_RR_TICKS)
-  {
-    /* Gap too long, reset baseline */
-    last_valid_peak = event->timestamp;
-    return 0U;
-  }
-  if (curr_rr < MIN_RR_TICKS)
-    return 0U;
-
-  last_valid_peak = event->timestamp;
-
-  rr_history[rr_head] = curr_rr;
-  rr_head = (uint8_t) ((rr_head + 1U) & RR_MASK);
-  if (rr_count < RR_HISTORY_SIZE)
-    rr_count++;
-
-  /* HRV report every N beats */
-  hrv_beat_count++;
-  if (hrv_beat_count >= HRV_REPORT_INTERVAL && rr_count >= RR_HISTORY_SIZE)
-  {
-    if (HRV_Compute(rr_history, RR_HISTORY_SIZE, rr_head, rr_count,
-                    0U, event->timestamp, &hrv_report))
-    {
-      hrv_report_ready = 1U;
-    }
-    hrv_beat_count = 0U;
-  }
-
-  /* BPM: 1 min = 60 000 ms = 600 000 ticks at 10 kHz */
-  uint32_t rr_sum = 0U;
-  uint8_t valid = 0U;
-  for (uint8_t i = 0U; i < RR_HISTORY_SIZE; ++i)
-  {
-    if (rr_history[i] != 0U)
-    {
-      rr_sum += rr_history[i];
-      valid++;
-    }
-  }
-  if (valid > 0U)
-  {
-    float avg_rr = (float) rr_sum / (float) valid;
-    event->bpm = (int16_t) (6000000.0f / avg_rr);
-  }
-
-  return 1U;
 }
 
 /* Scan MWI history for the highest peak in [start_ts, end_ts] */
@@ -287,16 +179,11 @@ static uint8_t search_back(uint32_t start_ts, uint32_t end_ts, float thresh,
 
 uint8_t ECG_Process_Sample(RawECG_t sample, HeartBeatEvent_t *out_event)
 {
-  if (!initialized)
+  /* Latch the first sample's timestamp for search-back timing */
+  if (last_peak_time == 0U)
   {
-    init_flattop();
-    signal_peak = 50.0f;
-    noise_peak = 10.0f;
-    threshold1 = noise_peak + 0.25f * (signal_peak - noise_peak);
-    threshold2 = 0.4f * threshold1;
     last_peak_time = sample.timestamp;
     last_sb_time = sample.timestamp;
-    initialized = 1U;
   }
 
   ++sample_count;
@@ -378,9 +265,9 @@ uint8_t ECG_Process_Sample(RawECG_t sample, HeartBeatEvent_t *out_event)
       /* Candidate peak */
       uint8_t is_r_peak = 1U;
 
-      if (rr_count >= 1U)
+      if (ecg_tracker.count >= 1U)
       {
-        float mean_rr_val = compute_recent_mean_rr(T_WAVE_RR_COUNT);
+        float mean_rr_val = BeatTracker_RecentMeanRR(&ecg_tracker, T_WAVE_RR_COUNT);
         if (time_since_last <= T_WAVE_TICKS
             || (mean_rr_val > 0.0f
                 && (float) time_since_last <= 0.5f * mean_rr_val))
@@ -400,7 +287,9 @@ uint8_t ECG_Process_Sample(RawECG_t sample, HeartBeatEvent_t *out_event)
         last_peak_time = local_max_ts;
 
         out_event->timestamp = local_max_ts;
-        uint8_t biometrics_ok = calculate_biometrics(out_event);
+        uint8_t biometrics_ok = BeatTracker_Update(&ecg_tracker,
+                                                   local_max_ts,
+                                                   &out_event->bpm);
 
         threshold1 = noise_peak + 0.25f * (signal_peak - noise_peak);
         threshold2 = 0.4f * threshold1;
@@ -427,7 +316,7 @@ uint8_t ECG_Process_Sample(RawECG_t sample, HeartBeatEvent_t *out_event)
 
   if (sb_cooldown >= SB_COOLDOWN_TICKS)
   {
-    float mean_rr = compute_mean_rr();
+    float mean_rr = BeatTracker_MeanRR(&ecg_tracker);
 
     uint8_t cond_a = (gap > SEARCH_10S_TICKS)
         || (mean_rr > 0.0f && (float) gap > 1.66f * mean_rr);
@@ -452,7 +341,8 @@ uint8_t ECG_Process_Sample(RawECG_t sample, HeartBeatEvent_t *out_event)
 
       if (search_back(sb_start, sb_end, thresh_sb, out_event))
       {
-        if (calculate_biometrics(out_event))
+        if (BeatTracker_Update(&ecg_tracker, out_event->timestamp,
+                               &out_event->bpm))
           return 1U;
       }
     }
@@ -463,11 +353,17 @@ uint8_t ECG_Process_Sample(RawECG_t sample, HeartBeatEvent_t *out_event)
 
 uint8_t ECG_Get_HRV_Report(HRVReport_t *report)
 {
-  if (!hrv_report_ready)
-    return 0U;
-  *report = hrv_report;
-  hrv_report_ready = 0U;
-  return 1U;
+  return BeatTracker_GetHRV(&ecg_tracker, report);
+}
+
+void ECG_Init(void)
+{
+  init_flattop();
+  signal_peak = 50.0f;
+  noise_peak = 10.0f;
+  threshold1 = noise_peak + 0.25f * (signal_peak - noise_peak);
+  threshold2 = 0.4f * threshold1;
+  BeatTracker_Init(&ecg_tracker, MIN_RR_TICKS, 0U);
 }
 
 void ECG_Reset(void)
@@ -497,11 +393,6 @@ void ECG_Reset(void)
   slope_sum = 0.0f;
   last_peak_slope = 0.0f;
 
-  signal_peak = 0.0f;
-  noise_peak = 0.0f;
-  threshold1 = 0.0f;
-  threshold2 = 0.0f;
-
   prev_mwi = 0.0f;
   local_max = 0.0f;
   local_max_slope = 0.0f;
@@ -511,13 +402,5 @@ void ECG_Reset(void)
   last_peak_time = 0U;
   last_sb_time = 0U;
 
-  memset(rr_history, 0, sizeof(rr_history));
-  rr_head = 0U;
-  rr_count = 0U;
-  last_valid_peak = 0U;
-
-  hrv_beat_count = 0U;
-  hrv_report_ready = 0U;
-
-  initialized = 0U;
+  ECG_Init();
 }
