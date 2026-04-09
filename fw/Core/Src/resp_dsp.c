@@ -21,7 +21,7 @@
 #define RESP_FS             10U       /* Decimated sample rate (Hz)           */
 #define DECIMATE_RATIO      48U       /* 480 / 10                             */
 #define RESP_BUF_SIZE       300U      /* 30 s at 10 Hz                        */
-#define RESP_UPDATE_PERIOD  50U       /* 5 s at 10 Hz — rate update interval  */
+#define RESP_UPDATE_PERIOD  50U       /* 5 s at 10 Hz                         */
 #define RESP_MIN_SAMPLES    300U      /* 30 s minimum before first estimate   */
 
 /*
@@ -181,14 +181,14 @@ void RESP_Process_Sample(int16_t az, uint32_t timestamp)
     if (r_vals[1] > r_vals[0] && r_vals[1] > r_vals[2] && r_vals[1] > 0.2f)
     {
       best_lag = lag - 1U;
-      break; /* First peak found — this is the fundamental period */
+      break;
     }
   }
 
   if (best_lag == 0U)
     return; /* No clear periodicity */
 
-  /* Respiratory rate in tenths of BrPM: rate = 60 / (lag / Fs) × 10 */
+  /* Respiratory rate in tenths of BrPM: rate = 60 / (lag / Fs) * 10 */
   int16_t rate = (int16_t) ((600U * RESP_FS + best_lag / 2U) / best_lag);
 
   resp_event.rr = rate;

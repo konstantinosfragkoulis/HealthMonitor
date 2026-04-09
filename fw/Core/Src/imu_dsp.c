@@ -17,7 +17,7 @@
 void IMU_Init(void)
 {
   SCG_Init();
-  /* RESP has no init — all state is zero-initialised */
+  /* RESP has no init */
 }
 
 void IMU_Process_Sample(RawIMU_t sample)

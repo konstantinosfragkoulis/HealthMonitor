@@ -32,26 +32,26 @@
 #define FS                  480.0f          /* Sample rate (Hz)                  */
 #define SAMPLES_PER_TICK    (FS / 10000.0f) /* 0.048 samples per TIM2 tick       */
 
-/* Window sizes in samples — ceil(ms × Fs / 1000) */
-#define FLATTOP_SIZE        29U     /* 60 ms  — PT++ flattop smoothing FIR       */
-#define MWI_SIZE            72U     /* 150 ms — moving window integration        */
-#define SLOPE_WIN_SIZE      34U     /* 70 ms  — T-wave slope comparison window   */
+/* Window sizes in samples - ceil(ms * Fs / 1000) */
+#define FLATTOP_SIZE        29U     /* 60 ms  - PT++ flattop smoothing FIR       */
+#define MWI_SIZE            72U     /* 150 ms - moving window integration        */
+#define SLOPE_WIN_SIZE      34U     /* 70 ms  - T-wave slope comparison window   */
 
 /* Timing thresholds in TIM2 ticks (10 kHz -> 1 tick = 0.1 ms) */
-#define REFRACTORY_TICKS    2310U   /* 231 ms — max 260 BPM (PT++ refractory)    */
-#define T_WAVE_TICKS        3600U   /* 360 ms — T-wave discrimination window     */
-#define SEARCH_10S_TICKS    10000U  /* 1.0 s  — short search-back threshold      */
-#define SEARCH_14S_TICKS    14000U  /* 1.4 s  — long search-back threshold       */
+#define REFRACTORY_TICKS    2310U   /* 231 ms - max 260 BPM (PT++ refractory)    */
+#define T_WAVE_TICKS        3600U   /* 360 ms - T-wave discrimination window     */
+#define SEARCH_10S_TICKS    10000U  /* 1.0 s  - short search-back threshold      */
+#define SEARCH_14S_TICKS    14000U  /* 1.4 s  - long search-back threshold       */
 #define SB_COOLDOWN_TICKS   REFRACTORY_TICKS /* Min gap between search-back runs */
 
 #define MIN_RR_TICKS        2310U   /* 231 ms -> 260 BPM max                      */
 #define T_WAVE_RR_COUNT     8U      /* PT++ specifies 8 most recent beats for T-wave */
 
-/* MWI output history for search-back. Must be a power of 2 >= 1.4 s × 480 Hz = 672 samples */
+/* MWI output history for search-back. Must be a power of 2 >= 1.4 s * 480 Hz = 672 samples */
 #define MWI_HIST_SIZE       1024U
 #define MWI_HIST_MASK       (MWI_HIST_SIZE - 1U)
 
-/* Bandpass filter — cascaded HP + LP biquad sections (2nd-order Butterworth) */
+/* Bandpass filter - cascaded HP + LP biquad sections (2nd-order Butterworth) */
 #define HP_B0   ( 0.95474f)
 #define HP_B1   (-1.90948f)
 #define HP_B2   ( 0.95474f)
