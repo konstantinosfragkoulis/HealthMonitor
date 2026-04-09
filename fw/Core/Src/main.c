@@ -40,15 +40,15 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 
-/* --- Telemetry protocol --- */
+/* Telemetry */
 #define TELEMETRY_HEADER    0xAABBU
 #define EVENT_HEADER        0xCCDDU
 #define BREATH_HEADER       0xEEFFU
 #define HRV_HEADER          0xFFAAU
 
-/* --- FIFO sizes (must be powers of 2) --- */
-#define SENSOR_FIFO_SIZE    16U
-#define TELEMETRY_FIFO_SIZE 256U
+/* FIFO sizes must be powers of 2 */
+#define SENSOR_FIFO_SIZE    256U
+#define TELEMETRY_FIFO_SIZE 512U
 
 /* USER CODE END PD */
 

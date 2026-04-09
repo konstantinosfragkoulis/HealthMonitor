@@ -26,18 +26,18 @@
 #define SCG_FS              480U
 
 #define TEMPLATE_LEN        336U     /* 700 ms at 480 Hz (200ms pre + 500ms post) */
-#define TEMPLATE_PRE        96U      /* 200 ms × 480 Hz                           */
-#define TEMPLATE_POST       240U     /* 500 ms × 480 Hz                           */
+#define TEMPLATE_PRE        96U      /* 200 ms * 480 Hz                           */
+#define TEMPLATE_POST       240U     /* 500 ms * 480 Hz                           */
 
 #define CAL_BUF_SIZE        4800U    /* 10 s at 480 Hz                            */
 #define CAL_MIN_PEAKS       5U       /* Minimum heartbeats in 10 s window         */
-#define CAL_MAD_THRESH      161U     /* 335 ms × 480/1000 ≈ 161 samples           */
+#define CAL_MAD_THRESH      161U     /* 335 ms * 480/1000 ~= 161 samples           */
 #define CAL_MAX_PEAKS       20U      /* Max peaks we'll track during selection     */
-#define CAL_PEAK_DIST       168U     /* 350 ms min distance between envelope peaks */
+#define CAL_PEAK_DIST       240U     /* 350 ms min distance between envelope peaks */
 #define CAL_PROM_THRESH     0.25f    /* Min prominence on normalised envelope      */
 #define NCC_LAG_RANGE       50U      /* ±50 samples for pairwise NCC alignment    */
 
-#define REFRACTORY_SAMPLES  168U     /* 350 ms -> 171 BPM max                      */
+#define REFRACTORY_SAMPLES  288U     /* 600 ms at 480 Hz -> 100 BPM max             */
 #define REFRACTORY_TICKS    (REFRACTORY_SAMPLES * 10000U / SCG_FS) /* 3500 TIM2    */
 #define NCC_ALPHA           0.4f     /* Adaptive threshold coefficient             */
 #define RULE1_A             0.125f   /* EMA fast coefficient (Rule-1)              */
@@ -54,10 +54,10 @@
 /* NCC history for search-back (must be power of 2) */
 #define NCC_HIST_SIZE       1024U
 #define NCC_HIST_MASK       (NCC_HIST_SIZE - 1U)
-#define SB_TRIGGER_RATIO    1.5f     /* Search-back if gap > 1.5 × mean AO-AO     */
+#define SB_TRIGGER_RATIO    1.5f     /* Search-back if gap > 1.5 * mean AO-AO     */
 #define SB_MAX_GAP_TICKS    30000U   /* 3 s absolute max before search-back        */
 #define SB_COOLDOWN_TICKS   REFRACTORY_TICKS /* Min gap between search-back runs   */
-#define SB_THRESH_RATIO     0.5f     /* Search-back threshold = 0.5 × ncc_thresh   */
+#define SB_THRESH_RATIO     0.5f     /* Search-back threshold = 0.5 * ncc_thresh   */
 
 /* Bandpass: 4th-order Butterworth 7-30 Hz, Fs=480 Hz */
 
@@ -287,6 +287,10 @@ static uint8_t select_template_from_peaks(const float *filtered,
   }
   if (n_valid < CAL_MIN_PEAKS)
     return 0U;
+
+  /* Cap to keep pairwise NCC computation bounded */
+  if (n_valid > 10U)
+    n_valid = 10U;
 
   /* Pairwise max NCC */
   float ncc_matrix[CAL_MAX_PEAKS][CAL_MAX_PEAKS];
@@ -564,7 +568,7 @@ void SCG_Process_Sample(int16_t az, uint32_t timestamp)
       }
       else
       {
-        /* Template selection failed — retry after another 10 s */
+        /* Template selection failed, retry after another 10 s */
         cal_count = 0U;
         cal_head = 0U;
         phase = SCG_PHASE_BUFFERING;
@@ -612,14 +616,16 @@ void SCG_Process_Sample(int16_t az, uint32_t timestamp)
         if (local_max_ncc > ncc_threshold
             && time_since_ao > REFRACTORY_TICKS)
         {
-          /* AO detected — update adaptive threshold */
+          /* AO detected */
           ncc_signal_peak = RULE1_A * local_max_ncc + RULE1_B * ncc_signal_peak;
 
           /* Look up AO timestamp from ring buffer */
           uint16_t ao_idx = (local_max_ncc_ring_head + template_ao_offset)
                             % TEMPLATE_LEN;
           uint32_t ao_ts = scg_ts_ring[ao_idx];
-          last_ao_time = ao_ts;
+          last_ao_time = local_max_ncc_ts; /* Use detection time, not AO time,
+                                              so the refractory isn't offset by
+                                              TEMPLATE_POST (~500 ms)           */
 
           ao_beat_event.timestamp = ao_ts;
           if (BeatTracker_Update(&ao_tracker, ao_ts, &ao_beat_event.bpm))
@@ -636,43 +642,43 @@ void SCG_Process_Sample(int16_t az, uint32_t timestamp)
 
       prev_ncc = ncc;
 
-      /* Search-back */
-      {
-        uint32_t ao_gap = timestamp - last_ao_time;
-        uint32_t sb_cd = timestamp - last_sb_time;
-
-        if (sb_cd >= SB_COOLDOWN_TICKS)
-        {
-          float mean_aoao = BeatTracker_MeanRR(&ao_tracker);
-
-          uint8_t should_search =
-              (mean_aoao > 0.0f && (float) ao_gap > SB_TRIGGER_RATIO * mean_aoao)
-              || (ao_gap > SB_MAX_GAP_TICKS);
-
-          if (should_search)
-          {
-            last_sb_time = timestamp;
-            float sb_thresh = SB_THRESH_RATIO * ncc_threshold;
-            uint32_t found_ts;
-            float found_ncc;
-
-            if (scg_search_back(timestamp, sb_thresh, &found_ts, &found_ncc))
-            {
-              ncc_signal_peak = RULE2_A * found_ncc
-                                + RULE2_B * ncc_signal_peak;
-              ncc_noise_peak = RULE2_A * found_ncc
-                               + RULE2_B * ncc_noise_peak;
-              ncc_threshold = ncc_noise_peak
-                              + NCC_ALPHA * (ncc_signal_peak - ncc_noise_peak);
-
-              last_ao_time = found_ts;
-              ao_beat_event.timestamp = found_ts;
-              if (BeatTracker_Update(&ao_tracker, found_ts, &ao_beat_event.bpm))
-                ao_beat_ready = 1U;
-            }
-          }
-        }
-      }
+//      /* Search-back */
+//      {
+//        uint32_t ao_gap = timestamp - last_ao_time;
+//        uint32_t sb_cd = timestamp - last_sb_time;
+//
+//        if (sb_cd >= SB_COOLDOWN_TICKS)
+//        {
+//          float mean_aoao = BeatTracker_MeanRR(&ao_tracker);
+//
+//          uint8_t should_search =
+//              (mean_aoao > 0.0f && (float) ao_gap > SB_TRIGGER_RATIO * mean_aoao)
+//              || (ao_gap > SB_MAX_GAP_TICKS);
+//
+//          if (should_search)
+//          {
+//            last_sb_time = timestamp;
+//            float sb_thresh = SB_THRESH_RATIO * ncc_threshold;
+//            uint32_t found_ts;
+//            float found_ncc;
+//
+//            if (scg_search_back(timestamp, sb_thresh, &found_ts, &found_ncc))
+//            {
+//              ncc_signal_peak = RULE2_A * found_ncc
+//                                + RULE2_B * ncc_signal_peak;
+//              ncc_noise_peak = RULE2_A * found_ncc
+//                               + RULE2_B * ncc_noise_peak;
+//              ncc_threshold = ncc_noise_peak
+//                              + NCC_ALPHA * (ncc_signal_peak - ncc_noise_peak);
+//
+//              last_ao_time = found_ts;
+//              ao_beat_event.timestamp = found_ts;
+//              if (BeatTracker_Update(&ao_tracker, found_ts, &ao_beat_event.bpm))
+//                ao_beat_ready = 1U;
+//            }
+//          }
+//        }
+//      }
 
       /* Template refresh (every 60s) */
       refresh_counter++;
