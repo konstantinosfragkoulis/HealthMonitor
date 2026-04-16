@@ -19,42 +19,36 @@
 #define NN50_THRESHOLD  500U  /* 50 ms in TIM2 ticks (10 kHz) */
 
 uint8_t HRV_Compute(const uint32_t *rr_buf, uint8_t buf_size,
-                    uint8_t head, uint8_t count,
+                    uint8_t head, uint8_t n_use,
                     uint8_t source, uint32_t timestamp,
                     HRVReport_t *report)
 {
   uint8_t mask = buf_size - 1U;
 
-  /* Mean RR interval */
-  uint32_t rr_sum = 0U;
-  uint8_t valid = 0U;
-  for (uint8_t i = 0U; i < buf_size; ++i)
-  {
-    if (rr_buf[i] != 0U)
-    {
-      rr_sum += rr_buf[i];
-      valid++;
-    }
-  }
-  if (valid < 2U)
+  if (n_use < 2U)
     return 0U;
 
-  float mean_rr = (float) rr_sum / (float) valid;
+  /* Mean RR interval - iterate backward from head over n_use intervals */
+  uint32_t rr_sum = 0U;
+  for (uint8_t i = 0U; i < n_use; ++i)
+  {
+    uint8_t idx = (uint8_t) ((head - 1U - i + buf_size) & mask);
+    rr_sum += rr_buf[idx];
+  }
+  float mean_rr = (float) rr_sum / (float) n_use;
 
   /* BPM x10: 1 minute = 600,000 TIM2 ticks at 10 kHz */
   report->bpm = (int16_t) (6000000.0f / mean_rr);
 
-  /* SDNN: standard deviation of NN intervals */
+  /* SDNN: standard deviation of NN intervals (Bessel's correction) */
   float var_sum = 0.0f;
-  for (uint8_t i = 0U; i < buf_size; ++i)
+  for (uint8_t i = 0U; i < n_use; ++i)
   {
-    if (rr_buf[i] != 0U)
-    {
-      float dev = (float) rr_buf[i] - mean_rr;
-      var_sum += dev * dev;
-    }
+    uint8_t idx = (uint8_t) ((head - 1U - i + buf_size) & mask);
+    float dev = (float) rr_buf[idx] - mean_rr;
+    var_sum += dev * dev;
   }
-  float sdnn = sqrtf(var_sum / (float) valid);
+  float sdnn = sqrtf(var_sum / (float) (n_use - 1U));
   report->sdnn = (uint16_t) sdnn;
 
   /* RMSSD + pNN50: from successive differences */
@@ -63,18 +57,15 @@ uint8_t HRV_Compute(const uint32_t *rr_buf, uint8_t buf_size,
   uint8_t diff_n = 0U;
   report->rmssd = 0U;
   report->pnn50 = 0U;
-  for (uint8_t i = 0U; i < buf_size - 1U; ++i)
+  for (uint8_t i = 0U; i < n_use - 1U; ++i)
   {
     uint8_t a = (uint8_t) ((head - 1U - i + buf_size) & mask);
     uint8_t b = (uint8_t) ((head - 2U - i + buf_size) & mask);
-    if (rr_buf[a] != 0U && rr_buf[b] != 0U)
-    {
-      int32_t d = (int32_t) rr_buf[a] - (int32_t) rr_buf[b];
-      sq_sum += (float) (d * d);
-      if (d > (int32_t) NN50_THRESHOLD || d < -(int32_t) NN50_THRESHOLD)
-        nn50_count++;
-      diff_n++;
-    }
+    int32_t d = (int32_t) rr_buf[a] - (int32_t) rr_buf[b];
+    sq_sum += (float) (d * d);
+    if (d > (int32_t) NN50_THRESHOLD || d < -(int32_t) NN50_THRESHOLD)
+      nn50_count++;
+    diff_n++;
   }
 
   float rmssd = 0.0f;
@@ -94,7 +85,7 @@ uint8_t HRV_Compute(const uint32_t *rr_buf, uint8_t buf_size,
   report->sd2 = (sd2_sq > 0.0f) ? (uint16_t) sqrtf(sd2_sq) : 0U;
 
   report->timestamp = timestamp;
-  report->n_beats = valid;
+  report->n_beats = n_use;
   report->source = source;
   report->reserved = 0U;
 
@@ -139,29 +130,24 @@ uint8_t BeatTracker_Update(BeatTracker_t *bt, uint32_t timestamp, int16_t *bpm)
     bt->count++;
 
   bt->hrv_beat_count++;
-  if (bt->hrv_beat_count >= BEAT_TRACKER_SIZE && bt->count >= BEAT_TRACKER_SIZE)
+  if (bt->hrv_beat_count >= HRV_TRIGGER_BEATS)
   {
-    if (HRV_Compute(bt->rr_buf, BEAT_TRACKER_SIZE, bt->head, bt->count,
-                    bt->source, timestamp, &bt->hrv_report))
-    {
+    if (BeatTracker_ComputeHRV(bt, timestamp, &bt->hrv_report))
       bt->hrv_ready = 1U;
-    }
     bt->hrv_beat_count = 0U;
   }
 
-  /* BPM from all valid intervals */
+  /* BPM from most recent BPM_WINDOW intervals for responsive display */
+  uint8_t bpm_n = (bt->count < BPM_WINDOW) ? bt->count : BPM_WINDOW;
   uint32_t rr_sum = 0U;
-  uint8_t valid = 0U;
-  for (uint8_t i = 0U; i < BEAT_TRACKER_SIZE; ++i)
+  for (uint8_t i = 0U; i < bpm_n; ++i)
   {
-    if (bt->rr_buf[i] != 0U)
-    {
-      rr_sum += bt->rr_buf[i];
-      valid++;
-    }
+    uint8_t idx = (uint8_t) ((bt->head - 1U - i + BEAT_TRACKER_SIZE)
+                              & BEAT_TRACKER_MASK);
+    rr_sum += bt->rr_buf[idx];
   }
-  if (valid > 0U)
-    *bpm = (int16_t) (6000000.0f / ((float) rr_sum / (float) valid));
+  if (bpm_n > 0U)
+    *bpm = (int16_t) (6000000.0f / ((float) rr_sum / (float) bpm_n));
 
   return 1U;
 }
@@ -175,19 +161,43 @@ uint8_t BeatTracker_GetHRV(BeatTracker_t *bt, HRVReport_t *report)
   return 1U;
 }
 
+uint8_t BeatTracker_ComputeHRV(BeatTracker_t *bt, uint32_t timestamp,
+                               HRVReport_t *report)
+{
+  if (bt->count < HRV_MIN_BEATS)
+    return 0U;
+
+  uint32_t window_dur = 0U;
+  uint8_t n_use = 0U;
+  for (uint8_t i = 0U; i < bt->count; ++i)
+  {
+    uint8_t idx = (uint8_t) ((bt->head - 1U - i + BEAT_TRACKER_SIZE)
+                              & BEAT_TRACKER_MASK);
+    window_dur += bt->rr_buf[idx];
+    n_use++;
+    if (window_dur >= HRV_MIN_WINDOW_TICKS)
+      break;
+  }
+
+  if (window_dur < HRV_MIN_WINDOW_TICKS)
+    return 0U;
+
+  return HRV_Compute(bt->rr_buf, BEAT_TRACKER_SIZE, bt->head, n_use,
+                     bt->source, timestamp, report);
+}
+
 float BeatTracker_MeanRR(const BeatTracker_t *bt)
 {
   uint32_t sum = 0U;
-  uint8_t cnt = 0U;
-  for (uint8_t i = 0U; i < BEAT_TRACKER_SIZE; ++i)
+  /* Use most recent 32 intervals for responsive mean (search-back, etc.) */
+  uint8_t window = (bt->count < 32U) ? bt->count : 32U;
+  for (uint8_t i = 0U; i < window; ++i)
   {
-    if (bt->rr_buf[i] != 0U)
-    {
-      sum += bt->rr_buf[i];
-      cnt++;
-    }
+    uint8_t idx = (uint8_t) ((bt->head - 1U - i + BEAT_TRACKER_SIZE)
+                              & BEAT_TRACKER_MASK);
+    sum += bt->rr_buf[idx];
   }
-  return (cnt > 0U) ? ((float) sum / (float) cnt) : 0.0f;
+  return (window > 0U) ? ((float) sum / (float) window) : 0.0f;
 }
 
 float BeatTracker_RecentMeanRR(const BeatTracker_t *bt, uint8_t n)
