@@ -42,6 +42,9 @@ uint8_t SCG_Get_Beat(HeartBeatEvent_t *event);
  */
 uint8_t SCG_Get_HRV_Report(HRVReport_t *report);
 
+/* Compute SCG HRV on demand (synchronized with ECG). */
+uint8_t SCG_Compute_HRV(uint32_t timestamp, HRVReport_t *report);
+
 /* Reset all state. Next call enters buffering phase. */
 void SCG_Reset(void);
 

@@ -41,6 +41,11 @@ uint8_t IMU_Get_HRV_Report(HRVReport_t *report)
   return SCG_Get_HRV_Report(report);
 }
 
+uint8_t IMU_Compute_HRV(uint32_t timestamp, HRVReport_t *report)
+{
+  return SCG_Compute_HRV(timestamp, report);
+}
+
 void IMU_Reset(void)
 {
   SCG_Reset();

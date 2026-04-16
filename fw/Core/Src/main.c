@@ -350,7 +350,7 @@ int main(void)
         }
       }
 
-      /* ECG HRV report (every 32 ECG beats) */
+      /* Synchronized HRV: when ECG triggers, compute both */
       HRVReport_t ecg_hrv = { 0 };
       if (ECG_Get_HRV_Report(&ecg_hrv))
       {
@@ -365,6 +365,24 @@ int main(void)
 
           tud_cdc_write((uint8_t*) &ecg_hrv, sizeof(HRVReport_t));
           tud_cdc_write_flush();
+        }
+
+        /* SCG HRV at the same moment, same 60-second window endpoint */
+        HRVReport_t scg_hrv = { 0 };
+        if (IMU_Compute_HRV(ecg_hrv.timestamp, &scg_hrv))
+        {
+          if (tud_cdc_connected()
+              && tud_cdc_write_available() >= sizeof(HRVReport_t))
+          {
+            scg_hrv.header = HRV_HEADER;
+            scg_hrv.crc = 0;
+            scg_hrv.crc = HAL_CRC_Calculate(
+                &hcrc, (uint32_t*) &scg_hrv,
+                sizeof(HRVReport_t) - sizeof(uint32_t));
+
+            tud_cdc_write((uint8_t*) &scg_hrv, sizeof(HRVReport_t));
+            tud_cdc_write_flush();
+          }
         }
       }
 
@@ -386,24 +404,6 @@ int main(void)
               sizeof(HeartBeatEvent_t) - sizeof(uint32_t));
 
           tud_cdc_write((uint8_t*) &scg_beat, sizeof(HeartBeatEvent_t));
-          tud_cdc_write_flush();
-        }
-      }
-
-      /* SCG HRV report (every 32 SCG beats) */
-      HRVReport_t scg_hrv = { 0 };
-      if (IMU_Get_HRV_Report(&scg_hrv))
-      {
-        if (tud_cdc_connected()
-            && tud_cdc_write_available() >= sizeof(HRVReport_t))
-        {
-          scg_hrv.header = HRV_HEADER;
-          scg_hrv.crc = 0;
-          scg_hrv.crc = HAL_CRC_Calculate(
-              &hcrc, (uint32_t*) &scg_hrv,
-              sizeof(HRVReport_t) - sizeof(uint32_t));
-
-          tud_cdc_write((uint8_t*) &scg_hrv, sizeof(HRVReport_t));
           tud_cdc_write_flush();
         }
       }

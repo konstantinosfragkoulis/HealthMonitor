@@ -31,6 +31,9 @@ uint8_t IMU_Get_Breath(BreathEvent_t *event);
 /* Poll for SCG-derived HRV report. Returns 1 if a new report is ready. */
 uint8_t IMU_Get_HRV_Report(HRVReport_t *report);
 
+/* Compute SCG HRV on demand (synchronized with ECG). */
+uint8_t IMU_Compute_HRV(uint32_t timestamp, HRVReport_t *report);
+
 /* Reset all IMU sub-pipelines. Next call enters buffering phase. */
 void IMU_Reset(void);
 

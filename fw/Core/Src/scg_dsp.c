@@ -752,6 +752,11 @@ uint8_t SCG_Get_HRV_Report(HRVReport_t *report)
   return BeatTracker_GetHRV(&ao_tracker, report);
 }
 
+uint8_t SCG_Compute_HRV(uint32_t timestamp, HRVReport_t *report)
+{
+  return BeatTracker_ComputeHRV(&ao_tracker, timestamp, report);
+}
+
 void SCG_Reset(void)
 {
   shp_w1 = 0.0f; shp_w2 = 0.0f;
