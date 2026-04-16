@@ -47,7 +47,7 @@
 #define HRV_HEADER          0xFFAAU
 
 /* FIFO sizes must be powers of 2 */
-#define SENSOR_FIFO_SIZE    256U
+#define SENSOR_FIFO_SIZE    1024U
 #define TELEMETRY_FIFO_SIZE 512U
 
 /* USER CODE END PD */
@@ -92,8 +92,8 @@ static uint8_t imu_tx[13] =
 volatile uint8_t system_ready = 0;
 
 DataSample_t sensor_fifo[SENSOR_FIFO_SIZE];
-volatile uint8_t sensor_fifo_head = 0;
-volatile uint8_t sensor_fifo_tail = 0;
+volatile uint16_t sensor_fifo_head = 0;
+volatile uint16_t sensor_fifo_tail = 0;
 
 TelemetryPacket_t telemetry_fifo[TELEMETRY_FIFO_SIZE];
 uint8_t telemetry_fifo_head = 0;
@@ -1046,8 +1046,8 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
   if (dma_in_progress)
     return;
 
-  uint8_t head = sensor_fifo_head;
-  uint8_t next_head = (head + 1) & (SENSOR_FIFO_SIZE - 1);
+  uint16_t head = sensor_fifo_head;
+  uint16_t next_head = (head + 1) & (SENSOR_FIFO_SIZE - 1);
   if (next_head == sensor_fifo_tail)
     return; /* FIFO full - drop this sample */
 
