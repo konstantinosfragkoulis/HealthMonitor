@@ -33,7 +33,7 @@
 #define CAL_MIN_PEAKS       5U       /* Minimum heartbeats in 10 s window         */
 #define CAL_MAD_THRESH      161U     /* 335 ms * 480/1000 ~= 161 samples           */
 #define CAL_MAX_PEAKS       20U      /* Max peaks we'll track during selection     */
-#define CAL_PEAK_DIST       240U     /* 350 ms min distance between envelope peaks */
+#define CAL_PEAK_DIST       240U     /* 500 ms min distance between envelope peaks */
 #define CAL_PROM_THRESH     0.25f    /* Min prominence on normalised envelope      */
 #define NCC_LAG_RANGE       50U      /* ±50 samples for pairwise NCC alignment    */
 
@@ -137,6 +137,7 @@ static float ncc_history[NCC_HIST_SIZE];
 static uint32_t ncc_ao_ts_history[NCC_HIST_SIZE];
 static uint32_t ncc_sample_count;
 static uint32_t last_sb_time;
+static uint8_t refresh_fail_count;
 
 static BeatTracker_t ao_tracker;
 
@@ -519,6 +520,7 @@ void SCG_Init(void)
 
   ncc_sample_count = 0U;
   last_sb_time = 0U;
+  refresh_fail_count = 0U;
 
   BeatTracker_Init(&ao_tracker, SCG_MIN_RR_TICKS, 1U);
   ao_beat_ready = 0U;
@@ -715,8 +717,21 @@ void SCG_Process_Sample(int16_t az, uint32_t timestamp)
               running_sum += scg_ring[k];
               running_sum2 += scg_ring[k] * scg_ring[k];
             }
+            refresh_fail_count = 0U;
           }
-          /* else keep old template */
+          else
+          {
+            /* Keep old template, track consecutive failures */
+            refresh_fail_count++;
+            if (refresh_fail_count >= 3U)
+            {
+              /* Full recalibration via BUFFERING */
+              refresh_fail_count = 0U;
+              cal_count = 0U;
+              cal_head = 0U;
+              phase = SCG_PHASE_BUFFERING;
+            }
+          }
         }
       }
 
