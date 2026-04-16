@@ -36,11 +36,6 @@ uint8_t IMU_Get_Breath(BreathEvent_t *event)
   return RESP_Get_Event(event);
 }
 
-uint8_t IMU_Get_HRV_Report(HRVReport_t *report)
-{
-  return SCG_Get_HRV_Report(report);
-}
-
 uint8_t IMU_Compute_HRV(uint32_t timestamp, HRVReport_t *report)
 {
   return SCG_Compute_HRV(timestamp, report);

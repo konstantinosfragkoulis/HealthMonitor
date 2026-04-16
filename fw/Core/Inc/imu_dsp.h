@@ -28,9 +28,6 @@ uint8_t IMU_Get_Beat(HeartBeatEvent_t *event);
 /* Poll for respiratory rate event. Returns 1 if a new estimate is ready. */
 uint8_t IMU_Get_Breath(BreathEvent_t *event);
 
-/* Poll for SCG-derived HRV report. Returns 1 if a new report is ready. */
-uint8_t IMU_Get_HRV_Report(HRVReport_t *report);
-
 /* Compute SCG HRV on demand (synchronized with ECG). */
 uint8_t IMU_Compute_HRV(uint32_t timestamp, HRVReport_t *report);
 

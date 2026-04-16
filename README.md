@@ -7,19 +7,19 @@ Bare metal wearable for real-time Electrocardiogram (ECG), Seismocardiogram (SCG
 **Core Stack:** STM32U5 (Cortex-M33) | ST1VAFE6AX (6-axis IMU) | AD8232 (ECG AFE)
 
 ## Architecture & DSP
-To guarantee precise timing, the firmware relies entirely on hardware synchronization. The IMU’s data-ready external interrupt triggers a simultaneous DMA transfer for both the SPI bus (IMU) and the ADC (ECG). This locks both data streams to a 480 Hz sample rate, eliminating software polling jitter.
+To guarantee precise timing, the firmware relies entirely on hardware synchronization. The IMU's data-ready external interrupt triggers a simultaneous DMA transfer for both the SPI bus (IMU) and the ADC (ECG). This locks both data streams to a 480 Hz sample rate, eliminating software polling jitter.
 
 The main loop runs three independent DSP pipelines on-device:
 
 * **ECG (Pan-Tompkins++):** Bandpass -> derivative -> squaring -> flattop smoothing -> MWI. Uses adaptive thresholding with search-back for real-time R-peak detection [1].
-* **SCG (Template Matching NCC):** Accel Z-axis (dorso-ventral) filtered at 7–30 Hz. Bootstraps a heartbeat template during the first 10s via a 4th-power envelope and pairwise NCC [2]. Runs a sliding normalized cross-correlation against the template for continuous AO detection. The template is double-buffered and refreshed every 60s.
-* **Respiratory Rate:** Accel Z-axis LPF -> decimated 48:1 (to 10 Hz) -> bandpass 0.1–0.6 Hz. Fed into a 30-second autocorrelation window, outputting a new respiratory rate every 5 seconds.
+* **SCG (Template Matching NCC):** Accel Z-axis (dorso-ventral) filtered at 7-30 Hz. Bootstraps a heartbeat template during the first 10s via a 4th-power envelope and pairwise NCC [2]. Runs a sliding normalized cross-correlation against the template for continuous AO detection. The template is double-buffered and refreshed every 60s.
+* **Respiratory Rate:** Accel Z-axis LPF -> decimated 48:1 (to 10 Hz) -> bandpass 0.1-0.6 Hz. Fed into a 30-second autocorrelation window, outputting a new respiratory rate every 5 seconds.
 
 HRV metrics (RMSSD, SDNN, pNN50, SD1, SD2) are calculated independently for both the ECG and SCG streams over a 60 second sliding window based on Task Force standards [3,4]. ECG and SCG reports are synchronized as the ECG trigger drives both computations simultaneously. Data is streamed to a host via a USB Virtual COM Port with CRC-32 integrity.
 
 ## Project Structure
-* `/hardware/Rev1`: First spin. **See `ERRATA.md`** (known routing/schematic flaw with the AD8232).
-* `/hardware/Rev2`: Fixed AD8232 layout, swapped to USB-C, placed components on the bottom layer.
+* `/hardware/HM-Rev1`: First spin. **See `ERRATA.md`** (known routing/schematic flaw with the AD8232).
+* `/hardware/HM-Rev2`: Fixed AD8232 layout, added USB-C, placed components on the bottom layer.
 * `/fw`: STM32CubeIDE project, bare-metal C source, DSP logic, and TinyUSB stack.
 * `/software`: Python telemetry parser and plotter.
 
@@ -79,8 +79,8 @@ python monitor.py /dev/ttyACM0 # Linux
 
 [1] M. N. Imtiaz and N. Khan, "Pan-Tompkins++: A Robust Approach to Detect R-peaks in ECG Signals," in *Proc. IEEE Int. Conf. Bioinformatics and Biomedicine (BIBM) Workshops*, 2022. [Online]. Available: https://arxiv.org/abs/2211.03171
 
-[2] S. Parlato, J. Centracchio, D. Esposito, E. Andreozzi, "Fully automated template matching method for ECG-free heartbeat detection in cardiomechanical signals," *Physical and Engineering Sciences in Medicine*, vol. 48, pp. 649–664, 2025.
+[2] S. Parlato, J. Centracchio, D. Esposito, P. Bifulco, and E. Andreozzi, "Fully automated template matching method for ECG-free heartbeat detection in cardiomechanical signals," *Physical and Engineering Sciences in Medicine*, vol. 48, pp. 649-664, 2025.
 
-[3] Task Force of the European Society of Cardiology and the North American Society of Pacing and Electrophysiology, "Heart rate variability: standards of measurement, physiological interpretation and clinical use," *Circulation*, vol. 93, pp. 1043–1065, 1996.
+[3] Task Force of the European Society of Cardiology and the North American Society of Pacing and Electrophysiology, "Heart rate variability: standards of measurement, physiological interpretation and clinical use," *Circulation*, vol. 93, pp. 1043-1065, 1996.
 
 [4] F. Shaffer and J. P. Ginsberg, "An Overview of Heart Rate Variability Metrics and Norms," *Frontiers in Public Health*, vol. 5, 258, 2017.

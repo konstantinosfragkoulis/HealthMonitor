@@ -39,7 +39,7 @@ uint8_t HRV_Compute(const uint32_t *rr_buf, uint8_t buf_size,
 
 #define HRV_TRIGGER_BEATS    32U       /* Emit HRV report every 32 new beats */
 #define HRV_MIN_BEATS        20U       /* Minimum beats for meaningful HRV   */
-#define HRV_MIN_WINDOW_TICKS 600000U   /* 60 s in TIM2 ticks (10 kHz)       */
+#define HRV_MIN_WINDOW_TICKS 600000U   /* 60 s in TIM2 ticks (10 kHz)        */
 #define BPM_WINDOW           16U       /* Recent beats for responsive BPM    */
 
 typedef struct

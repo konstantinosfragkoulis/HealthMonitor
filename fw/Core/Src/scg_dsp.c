@@ -9,7 +9,7 @@
  *
  * State machine: BUFFERING (10s) -> SELECTING -> DETECTING
  *
- * ~52 KB .bss (two 4800-sample cal buffers dominate)
+ * ~44 KB .bss (two 4800-sample cal buffers dominate)
  *
  *  Created on: Mar 31, 2026
  *      Author: konstantinos
@@ -25,39 +25,29 @@
 
 #define SCG_FS              480U
 
-#define TEMPLATE_LEN        336U     /* 700 ms at 480 Hz (200ms pre + 500ms post) */
-#define TEMPLATE_PRE        96U      /* 200 ms * 480 Hz                           */
-#define TEMPLATE_POST       240U     /* 500 ms * 480 Hz                           */
+#define TEMPLATE_LEN        336U     /* 700 ms at 480 Hz (200ms pre + 500ms post)   */
+#define TEMPLATE_PRE        96U      /* 200 ms * 480 Hz                             */
+#define TEMPLATE_POST       240U     /* 500 ms * 480 Hz                             */
 
-#define CAL_BUF_SIZE        4800U    /* 10 s at 480 Hz                            */
-#define CAL_MIN_PEAKS       5U       /* Minimum heartbeats in 10 s window         */
-#define CAL_MAD_THRESH      161U     /* 335 ms * 480/1000 ~= 161 samples           */
-#define CAL_MAX_PEAKS       20U      /* Max peaks we'll track during selection     */
-#define CAL_PEAK_DIST       240U     /* 500 ms min distance between envelope peaks */
-#define CAL_PROM_THRESH     0.25f    /* Min prominence on normalised envelope      */
-#define NCC_LAG_RANGE       50U      /* ±50 samples for pairwise NCC alignment    */
+#define CAL_BUF_SIZE        4800U    /* 10 s at 480 Hz                              */
+#define CAL_MIN_PEAKS       5U       /* Minimum heartbeats in 10 s window           */
+#define CAL_MAD_THRESH      161U     /* 335 ms * 480/1000 ~= 161 samples            */
+#define CAL_MAX_PEAKS       20U      /* Max peaks we'll track during selection      */
+#define CAL_PEAK_DIST       240U     /* 500 ms min distance between envelope peaks  */
+#define CAL_PROM_THRESH     0.25f    /* Min prominence on normalised envelope       */
+#define NCC_LAG_RANGE       50U      /* ±50 samples for pairwise NCC alignment      */
 
 #define REFRACTORY_SAMPLES  288U     /* 600 ms at 480 Hz -> 100 BPM max             */
-#define REFRACTORY_TICKS    (REFRACTORY_SAMPLES * 10000U / SCG_FS) /* 3500 TIM2    */
-#define NCC_ALPHA           0.4f     /* Adaptive threshold coefficient             */
-#define RULE1_A             0.125f   /* EMA fast coefficient (Rule-1)              */
-#define RULE1_B             0.875f   /* EMA slow coefficient (Rule-1)              */
-#define RULE2_A             0.75f    /* EMA fast coefficient (Rule-2, search-back) */
-#define RULE2_B             0.25f    /* EMA slow coefficient (Rule-2, search-back) */
+#define REFRACTORY_TICKS    (REFRACTORY_SAMPLES * 10000U / SCG_FS) /* 6000 = 600 ms */
+#define NCC_ALPHA           0.4f     /* Adaptive threshold coefficient              */
+#define RULE1_A             0.125f   /* EMA fast coefficient (Rule-1)               */
+#define RULE1_B             0.875f   /* EMA slow coefficient (Rule-1)               */
 
-#define SCG_MIN_RR_TICKS    3500U    /* ~350 ms -> 171 BPM                         */
+#define SCG_MIN_RR_TICKS    3500U    /* ~350 ms -> 171 BPM                          */
 
-#define REFRESH_INTERVAL    (60U * SCG_FS)  /* 60 s between template refreshes    */
-#define REFRESH_NCC_THRESH  0.7f     /* Min NCC to accept refreshed template       */
-#define RECOMPUTE_INTERVAL  (30U * SCG_FS)  /* 30 s running sum recomputation     */
-
-/* NCC history for search-back (must be power of 2) */
-#define NCC_HIST_SIZE       1024U
-#define NCC_HIST_MASK       (NCC_HIST_SIZE - 1U)
-#define SB_TRIGGER_RATIO    1.5f     /* Search-back if gap > 1.5 * mean AO-AO     */
-#define SB_MAX_GAP_TICKS    30000U   /* 3 s absolute max before search-back        */
-#define SB_COOLDOWN_TICKS   REFRACTORY_TICKS /* Min gap between search-back runs   */
-#define SB_THRESH_RATIO     0.5f     /* Search-back threshold = 0.5 * ncc_thresh   */
+#define REFRESH_INTERVAL    (60U * SCG_FS)  /* 60 s between template refreshes      */
+#define REFRESH_NCC_THRESH  0.7f     /* Min NCC to accept refreshed template        */
+#define RECOMPUTE_INTERVAL  (30U * SCG_FS)  /* 30 s running sum recomputation       */
 
 /* Bandpass: 4th-order Butterworth 7-30 Hz, Fs=480 Hz */
 
@@ -99,18 +89,17 @@ static float slp_w1, slp_w2;
 
 /* Phase */
 static scg_phase_t phase;
-static uint32_t sample_idx;          /* Total samples since init */
 
 /* Calibration buffer (also used for template refresh) */
 static float cal_buf[CAL_BUF_SIZE];
 static uint16_t cal_head;
-static uint16_t cal_count;           /* Samples written since last selection */
+static uint16_t cal_count; /* Samples written since last selection */
 
 /* Active template */
 static float scg_template[TEMPLATE_LEN];
 static float template_mean;
-static float template_denom;         /* sqrt(SUM(t[k]-μ)^2) */
-static uint16_t template_ao_offset;  /* Index of AO peak within template*/
+static float template_denom; /* sqrt(SUM(t[k]-μ)^2) */
+static uint16_t template_ao_offset; /* Index of AO peak within template */
 
 static float pending_template[TEMPLATE_LEN];
 
@@ -133,10 +122,6 @@ static uint32_t last_ao_time;
 static uint32_t refresh_counter;
 static uint32_t recompute_counter;
 
-static float ncc_history[NCC_HIST_SIZE];
-static uint32_t ncc_ao_ts_history[NCC_HIST_SIZE];
-static uint32_t ncc_sample_count;
-static uint32_t last_sb_time;
 static uint8_t refresh_fail_count;
 
 static BeatTracker_t ao_tracker;
@@ -455,50 +440,9 @@ static float compute_ncc(void)
   return (ncc > 0.0f) ? ncc : 0.0f;
 }
 
-/* Search NCC history for missed beats. Returns 1 if a peak was found. */
-static uint8_t scg_search_back(uint32_t current_ts, float thresh,
-                               uint32_t *out_ts, float *out_ncc)
-{
-  float best_ncc = 0.0f;
-  uint32_t best_ts = 0U;
-  uint32_t earliest = last_ao_time + REFRACTORY_TICKS;
-
-  uint32_t max_look = (ncc_sample_count < NCC_HIST_SIZE)
-                        ? ncc_sample_count : NCC_HIST_SIZE;
-  /* Don't search further than ~2.5 s (1200 samples at 480 Hz) */
-  if (max_look > 1200U)
-    max_look = 1200U;
-
-  for (uint32_t i = 1U; i <= max_look; ++i)
-  {
-    uint32_t idx = (ncc_sample_count - i) & NCC_HIST_MASK;
-    uint32_t ts = ncc_ao_ts_history[idx];
-
-    if (ts >= earliest && ts <= current_ts)
-    {
-      if (ncc_history[idx] > best_ncc && ncc_history[idx] > thresh)
-      {
-        best_ncc = ncc_history[idx];
-        best_ts = ts;
-      }
-    }
-  }
-
-  if (best_ts != 0U)
-  {
-    *out_ts = best_ts;
-    *out_ncc = best_ncc;
-    return 1U;
-  }
-  return 0U;
-}
-
-/* Public API */
-
 void SCG_Init(void)
 {
   phase = SCG_PHASE_BUFFERING;
-  sample_idx = 0U;
   cal_head = 0U;
   cal_count = 0U;
   ring_head = 0U;
@@ -518,8 +462,6 @@ void SCG_Init(void)
   refresh_counter = 0U;
   recompute_counter = 0U;
 
-  ncc_sample_count = 0U;
-  last_sb_time = 0U;
   refresh_fail_count = 0U;
 
   BeatTracker_Init(&ao_tracker, SCG_MIN_RR_TICKS, 1U);
@@ -529,7 +471,6 @@ void SCG_Init(void)
 void SCG_Process_Sample(int16_t az, uint32_t timestamp)
 {
   float filtered = bandpass((float) az);
-  sample_idx++;
 
   float old = scg_ring[ring_head];
   scg_ring[ring_head] = filtered;
@@ -583,15 +524,6 @@ void SCG_Process_Sample(int16_t az, uint32_t timestamp)
       /* NCC */
       float ncc = compute_ncc();
 
-      /* Store in history for search-back */
-      {
-        uint32_t h = ncc_sample_count & NCC_HIST_MASK;
-        ncc_history[h] = ncc;
-        uint16_t ao_pos = (ring_head + template_ao_offset) % TEMPLATE_LEN;
-        ncc_ao_ts_history[h] = scg_ts_ring[ao_pos];
-        ncc_sample_count++;
-      }
-
       /* Peak detection */
       uint32_t time_since_ao = timestamp - last_ao_time;
 
@@ -627,7 +559,7 @@ void SCG_Process_Sample(int16_t az, uint32_t timestamp)
           uint32_t ao_ts = scg_ts_ring[ao_idx];
           last_ao_time = local_max_ncc_ts; /* Use detection time, not AO time,
                                               so the refractory isn't offset by
-                                              TEMPLATE_POST (~500 ms)           */
+                                              TEMPLATE_POST (~500 ms) */
 
           ao_beat_event.timestamp = ao_ts;
           if (BeatTracker_Update(&ao_tracker, ao_ts, &ao_beat_event.bpm))
@@ -643,44 +575,6 @@ void SCG_Process_Sample(int16_t az, uint32_t timestamp)
       }
 
       prev_ncc = ncc;
-
-//      /* Search-back */
-//      {
-//        uint32_t ao_gap = timestamp - last_ao_time;
-//        uint32_t sb_cd = timestamp - last_sb_time;
-//
-//        if (sb_cd >= SB_COOLDOWN_TICKS)
-//        {
-//          float mean_aoao = BeatTracker_MeanRR(&ao_tracker);
-//
-//          uint8_t should_search =
-//              (mean_aoao > 0.0f && (float) ao_gap > SB_TRIGGER_RATIO * mean_aoao)
-//              || (ao_gap > SB_MAX_GAP_TICKS);
-//
-//          if (should_search)
-//          {
-//            last_sb_time = timestamp;
-//            float sb_thresh = SB_THRESH_RATIO * ncc_threshold;
-//            uint32_t found_ts;
-//            float found_ncc;
-//
-//            if (scg_search_back(timestamp, sb_thresh, &found_ts, &found_ncc))
-//            {
-//              ncc_signal_peak = RULE2_A * found_ncc
-//                                + RULE2_B * ncc_signal_peak;
-//              ncc_noise_peak = RULE2_A * found_ncc
-//                               + RULE2_B * ncc_noise_peak;
-//              ncc_threshold = ncc_noise_peak
-//                              + NCC_ALPHA * (ncc_signal_peak - ncc_noise_peak);
-//
-//              last_ao_time = found_ts;
-//              ao_beat_event.timestamp = found_ts;
-//              if (BeatTracker_Update(&ao_tracker, found_ts, &ao_beat_event.bpm))
-//                ao_beat_ready = 1U;
-//            }
-//          }
-//        }
-//      }
 
       /* Template refresh (every 60s) */
       refresh_counter++;
@@ -709,14 +603,6 @@ void SCG_Process_Sample(int16_t az, uint32_t timestamp)
             memcpy(scg_template, pending_template,
                    TEMPLATE_LEN * sizeof(float));
             precompute_template_stats(scg_template, TEMPLATE_LEN);
-            /* Recompute running sums after swap */
-            running_sum = 0.0f;
-            running_sum2 = 0.0f;
-            for (uint16_t k = 0U; k < TEMPLATE_LEN; ++k)
-            {
-              running_sum += scg_ring[k];
-              running_sum2 += scg_ring[k] * scg_ring[k];
-            }
             refresh_fail_count = 0U;
           }
           else
@@ -762,11 +648,6 @@ uint8_t SCG_Get_Beat(HeartBeatEvent_t *event)
   return 1U;
 }
 
-uint8_t SCG_Get_HRV_Report(HRVReport_t *report)
-{
-  return BeatTracker_GetHRV(&ao_tracker, report);
-}
-
 uint8_t SCG_Compute_HRV(uint32_t timestamp, HRVReport_t *report)
 {
   return BeatTracker_ComputeHRV(&ao_tracker, timestamp, report);
@@ -783,8 +664,6 @@ void SCG_Reset(void)
   memset(pending_template, 0, sizeof(pending_template));
   memset(scg_ring, 0, sizeof(scg_ring));
   memset(scg_ts_ring, 0, sizeof(scg_ts_ring));
-  memset(ncc_history, 0, sizeof(ncc_history));
-  memset(ncc_ao_ts_history, 0, sizeof(ncc_ao_ts_history));
 
   ao_beat_ready = 0U;
 

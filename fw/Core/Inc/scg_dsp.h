@@ -36,12 +36,6 @@ void SCG_Process_Sample(int16_t az, uint32_t timestamp);
  */
 uint8_t SCG_Get_Beat(HeartBeatEvent_t *event);
 
-/*
- * Retrieve the latest SCG-derived HRV report.
- * Returns 1 if a new report is ready (every 32 beats), 0 otherwise.
- */
-uint8_t SCG_Get_HRV_Report(HRVReport_t *report);
-
 /* Compute SCG HRV on demand (synchronized with ECG). */
 uint8_t SCG_Compute_HRV(uint32_t timestamp, HRVReport_t *report);
 

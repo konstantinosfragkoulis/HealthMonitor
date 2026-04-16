@@ -96,8 +96,8 @@ volatile uint16_t sensor_fifo_head = 0;
 volatile uint16_t sensor_fifo_tail = 0;
 
 TelemetryPacket_t telemetry_fifo[TELEMETRY_FIFO_SIZE];
-uint8_t telemetry_fifo_head = 0;
-uint8_t telemetry_fifo_tail = 0;
+uint16_t telemetry_fifo_head = 0;
+uint16_t telemetry_fifo_tail = 0;
 
 volatile uint8_t spi_finished = 0;
 volatile uint8_t adc_finished = 0;
@@ -164,6 +164,25 @@ void Check_DMA_Complete(void)
     sensor_fifo_head = (sensor_fifo_head + 1) & (SENSOR_FIFO_SIZE - 1);
     dma_in_progress = 0;
   }
+}
+
+static uint8_t USB_SendEvent(void *pkt, uint16_t size, uint16_t header)
+{
+  if (!tud_cdc_connected() || tud_cdc_write_available() < size)
+    return 0U;
+
+  uint8_t *buf = (uint8_t*) pkt;
+  uint16_t crc_off = size - (uint16_t) sizeof(uint32_t);
+  uint32_t zero = 0U;
+
+  memcpy(buf, &header, sizeof(uint16_t));
+  memcpy(buf + crc_off, &zero, sizeof(uint32_t));
+  uint32_t crc = HAL_CRC_Calculate(&hcrc, (uint32_t*) buf, crc_off);
+  memcpy(buf + crc_off, &crc, sizeof(uint32_t));
+
+  tud_cdc_write(buf, size);
+  tud_cdc_write_flush();
+  return 1U;
 }
 /* USER CODE END 0 */
 
@@ -288,31 +307,26 @@ int main(void)
     {
       __DMB();
 
+      DataSample_t *s = &sensor_fifo[sensor_fifo_tail];
+
       RawECG_t ecg_sample;
-      ecg_sample.timestamp = sensor_fifo[sensor_fifo_tail].timestamp;
-      ecg_sample.ecg = (int16_t) sensor_fifo[sensor_fifo_tail].adc[1]
-          - (int16_t) sensor_fifo[sensor_fifo_tail].adc[2];
+      ecg_sample.timestamp = s->timestamp;
+      ecg_sample.ecg = (int16_t) s->adc[1] - (int16_t) s->adc[2];
       ecg_sample.reserved = 0;
 
       RawIMU_t imu_sample;
-      imu_sample.timestamp = sensor_fifo[sensor_fifo_tail].timestamp;
+      imu_sample.timestamp = s->timestamp;
       /* Gyroscope: OUTX_L_G(0x22)..OUTZ_H_G(0x27) -> imu[1..6] */
-      imu_sample.gx = (int16_t) ((sensor_fifo[sensor_fifo_tail].imu[2] << 8)
-          | sensor_fifo[sensor_fifo_tail].imu[1]);
-      imu_sample.gy = (int16_t) ((sensor_fifo[sensor_fifo_tail].imu[4] << 8)
-          | sensor_fifo[sensor_fifo_tail].imu[3]);
-      imu_sample.gz = (int16_t) ((sensor_fifo[sensor_fifo_tail].imu[6] << 8)
-          | sensor_fifo[sensor_fifo_tail].imu[5]);
+      imu_sample.gx = (int16_t) ((s->imu[2] << 8) | s->imu[1]);
+      imu_sample.gy = (int16_t) ((s->imu[4] << 8) | s->imu[3]);
+      imu_sample.gz = (int16_t) ((s->imu[6] << 8) | s->imu[5]);
       /* Accelerometer: OUTZ_L_A(0x28)..OUTX_H_A(0x2D) -> imu[7..12] */
-      imu_sample.ax = (int16_t) ((sensor_fifo[sensor_fifo_tail].imu[12] << 8)
-          | sensor_fifo[sensor_fifo_tail].imu[11]);
-      imu_sample.ay = (int16_t) ((sensor_fifo[sensor_fifo_tail].imu[10] << 8)
-          | sensor_fifo[sensor_fifo_tail].imu[9]);
-      imu_sample.az = (int16_t) ((sensor_fifo[sensor_fifo_tail].imu[8] << 8)
-          | sensor_fifo[sensor_fifo_tail].imu[7]);
+      imu_sample.ax = (int16_t) ((s->imu[12] << 8) | s->imu[11]);
+      imu_sample.ay = (int16_t) ((s->imu[10] << 8) | s->imu[9]);
+      imu_sample.az = (int16_t) ((s->imu[8] << 8) | s->imu[7]);
 
       /* Release the FIFO slot */
-      sensor_fifo[sensor_fifo_tail].status = 0;
+      s->status = 0;
       sensor_fifo_tail = (sensor_fifo_tail + 1) & (SENSOR_FIFO_SIZE - 1);
 
       /* Run DSP pipelines */
@@ -334,55 +348,22 @@ int main(void)
          * Send the heartbeat event immediately.
          * bpm and timestamp are populated by ECG_Process_Sample().
          */
-        if (tud_cdc_connected()
-            && tud_cdc_write_available() >= sizeof(HeartBeatEvent_t))
-        {
-          latest_beat.header = EVENT_HEADER;
-          latest_beat.source = 0U;
-          memset(latest_beat.reserved, 0, sizeof(latest_beat.reserved));
-          latest_beat.crc = 0;
-          latest_beat.crc = HAL_CRC_Calculate(
-              &hcrc, (uint32_t*) &latest_beat,
-              sizeof(HeartBeatEvent_t) - sizeof(uint32_t));
-
-          tud_cdc_write((uint8_t*) &latest_beat, sizeof(HeartBeatEvent_t));
-          tud_cdc_write_flush();
-        }
+        latest_beat.source = 0U;
+        memset(latest_beat.reserved, 0, sizeof(latest_beat.reserved));
+        USB_SendEvent(&latest_beat, sizeof(HeartBeatEvent_t), EVENT_HEADER);
       }
 
       /* Synchronized HRV: when ECG triggers, compute both */
       HRVReport_t ecg_hrv = { 0 };
       if (ECG_Get_HRV_Report(&ecg_hrv))
       {
-        if (tud_cdc_connected()
-            && tud_cdc_write_available() >= sizeof(HRVReport_t))
-        {
-          ecg_hrv.header = HRV_HEADER;
-          ecg_hrv.crc = 0;
-          ecg_hrv.crc = HAL_CRC_Calculate(
-              &hcrc, (uint32_t*) &ecg_hrv,
-              sizeof(HRVReport_t) - sizeof(uint32_t));
-
-          tud_cdc_write((uint8_t*) &ecg_hrv, sizeof(HRVReport_t));
-          tud_cdc_write_flush();
-        }
+        USB_SendEvent(&ecg_hrv, sizeof(HRVReport_t), HRV_HEADER);
 
         /* SCG HRV at the same moment, same 60-second window endpoint */
         HRVReport_t scg_hrv = { 0 };
         if (IMU_Compute_HRV(ecg_hrv.timestamp, &scg_hrv))
         {
-          if (tud_cdc_connected()
-              && tud_cdc_write_available() >= sizeof(HRVReport_t))
-          {
-            scg_hrv.header = HRV_HEADER;
-            scg_hrv.crc = 0;
-            scg_hrv.crc = HAL_CRC_Calculate(
-                &hcrc, (uint32_t*) &scg_hrv,
-                sizeof(HRVReport_t) - sizeof(uint32_t));
-
-            tud_cdc_write((uint8_t*) &scg_hrv, sizeof(HRVReport_t));
-            tud_cdc_write_flush();
-          }
+          USB_SendEvent(&scg_hrv, sizeof(HRVReport_t), HRV_HEADER);
         }
       }
 
@@ -392,42 +373,20 @@ int main(void)
       HeartBeatEvent_t scg_beat = { 0 };
       if (IMU_Get_Beat(&scg_beat))
       {
-        if (tud_cdc_connected()
-            && tud_cdc_write_available() >= sizeof(HeartBeatEvent_t))
-        {
-          scg_beat.header = EVENT_HEADER;
-          scg_beat.source = 1U;
-          memset(scg_beat.reserved, 0, sizeof(scg_beat.reserved));
-          scg_beat.crc = 0;
-          scg_beat.crc = HAL_CRC_Calculate(
-              &hcrc, (uint32_t*) &scg_beat,
-              sizeof(HeartBeatEvent_t) - sizeof(uint32_t));
-
-          tud_cdc_write((uint8_t*) &scg_beat, sizeof(HeartBeatEvent_t));
-          tud_cdc_write_flush();
-        }
+        scg_beat.source = 1U;
+        memset(scg_beat.reserved, 0, sizeof(scg_beat.reserved));
+        USB_SendEvent(&scg_beat, sizeof(HeartBeatEvent_t), EVENT_HEADER);
       }
 
       /* Respiratory rate event */
       BreathEvent_t breath_evt = { 0 };
       if (IMU_Get_Breath(&breath_evt))
       {
-        if (tud_cdc_connected()
-            && tud_cdc_write_available() >= sizeof(BreathEvent_t))
-        {
-          breath_evt.header = BREATH_HEADER;
-          breath_evt.crc = 0;
-          breath_evt.crc = HAL_CRC_Calculate(
-              &hcrc, (uint32_t*) &breath_evt,
-              sizeof(BreathEvent_t) - sizeof(uint32_t));
-
-          tud_cdc_write((uint8_t*) &breath_evt, sizeof(BreathEvent_t));
-          tud_cdc_write_flush();
-        }
+        USB_SendEvent(&breath_evt, sizeof(BreathEvent_t), BREATH_HEADER);
       }
 
       /* Queue a telemetry frame */
-      uint8_t next_telemetry_head = (telemetry_fifo_head + 1)
+      uint16_t next_telemetry_head = (telemetry_fifo_head + 1)
           & (TELEMETRY_FIFO_SIZE - 1);
 
       if (next_telemetry_head != telemetry_fifo_tail)
@@ -457,7 +416,7 @@ int main(void)
     }
     else
     {
-      uint8_t packets_sent = 0;
+      uint8_t sent_any = 0U;
 
       while (telemetry_fifo_tail != telemetry_fifo_head)
       {
@@ -473,14 +432,11 @@ int main(void)
 
         telemetry_fifo_tail = (telemetry_fifo_tail + 1)
             & (TELEMETRY_FIFO_SIZE - 1);
-        packets_sent++;
-
+        sent_any = 1U;
       }
 
-      if (packets_sent > 0)
-      {
+      if (sent_any)
         tud_cdc_write_flush();
-      }
     }
 
     if (led_on && (50 <= HAL_GetTick() - led_timer))

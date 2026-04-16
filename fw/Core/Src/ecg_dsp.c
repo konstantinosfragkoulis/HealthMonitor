@@ -44,8 +44,8 @@
 #define SEARCH_14S_TICKS    14000U  /* 1.4 s  - long search-back threshold       */
 #define SB_COOLDOWN_TICKS   REFRACTORY_TICKS /* Min gap between search-back runs */
 
-#define MIN_RR_TICKS        2310U   /* 231 ms -> 260 BPM max                      */
-#define T_WAVE_RR_COUNT     8U      /* PT++ specifies 8 most recent beats for T-wave */
+#define MIN_RR_TICKS        2310U   /* 231 ms -> 260 BPM max                     */
+#define T_WAVE_RR_COUNT     8U      /* 8 most recent beats for T-wave            */
 
 /* MWI output history for search-back. Must be a power of 2 >= 1.4 s * 480 Hz = 672 samples */
 #define MWI_HIST_SIZE       1024U
@@ -109,6 +109,12 @@ static uint32_t last_sb_time;
 
 static BeatTracker_t ecg_tracker;
 
+static void update_thresholds(void)
+{
+  threshold1 = noise_peak + 0.25f * (signal_peak - noise_peak);
+  threshold2 = 0.4f * threshold1;
+}
+
 static void init_flattop(void)
 {
   /* Coefficients from the PT++ paper */
@@ -167,8 +173,7 @@ static uint8_t search_back(uint32_t start_ts, uint32_t end_ts, float thresh,
   {
     signal_peak = RULE2_ALPHA * best_val + RULE2_BETA * signal_peak;
     noise_peak = RULE2_ALPHA * best_val + RULE2_BETA * noise_peak;
-    threshold1 = noise_peak + 0.25f * (signal_peak - noise_peak);
-    threshold2 = 0.4f * threshold1;
+    update_thresholds();
 
     last_peak_time = best_ts;
     event->timestamp = best_ts;
@@ -255,7 +260,6 @@ uint8_t ECG_Process_Sample(RawECG_t sample, HeartBeatEvent_t *out_event)
   }
   else if (peak_dir == 1 && mwi_out < prev_mwi)
   {
-    /* Decision logic */
     peak_dir = -1;
 
     uint32_t time_since_last = sample.timestamp - last_peak_time;
@@ -291,8 +295,7 @@ uint8_t ECG_Process_Sample(RawECG_t sample, HeartBeatEvent_t *out_event)
                                                    local_max_ts,
                                                    &out_event->bpm);
 
-        threshold1 = noise_peak + 0.25f * (signal_peak - noise_peak);
-        threshold2 = 0.4f * threshold1;
+        update_thresholds();
 
         prev_mwi = mwi_out;
         return biometrics_ok;
@@ -304,8 +307,7 @@ uint8_t ECG_Process_Sample(RawECG_t sample, HeartBeatEvent_t *out_event)
       noise_peak = RULE1_ALPHA * local_max + RULE1_BETA * noise_peak;
     }
 
-    threshold1 = noise_peak + 0.25f * (signal_peak - noise_peak);
-    threshold2 = 0.4f * threshold1;
+    update_thresholds();
   }
 
   prev_mwi = mwi_out;
@@ -361,8 +363,7 @@ void ECG_Init(void)
   init_flattop();
   signal_peak = 50.0f;
   noise_peak = 10.0f;
-  threshold1 = noise_peak + 0.25f * (signal_peak - noise_peak);
-  threshold2 = 0.4f * threshold1;
+  update_thresholds();
   BeatTracker_Init(&ecg_tracker, MIN_RR_TICKS, 0U);
 }
 
