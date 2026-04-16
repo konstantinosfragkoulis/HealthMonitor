@@ -13,7 +13,7 @@ The main loop runs three independent DSP pipelines on-device:
 
 * **ECG (Pan-Tompkins++):** Bandpass -> derivative -> squaring -> flattop smoothing -> MWI. Uses adaptive thresholding with search-back for real-time R-peak detection [1].
 * **SCG (Template Matching NCC):** Accel Z-axis (dorso-ventral) filtered at 7–30 Hz. Bootstraps a heartbeat template during the first 10s via a 4th-power envelope and pairwise NCC [2]. Runs a sliding normalized cross-correlation against the template for continuous AO detection. The template is double-buffered and refreshed every 60s.
-* **Respiratory Rate:** Accel Z-axis LPF -> decimated 48:1 (to 10 Hz) -> bandpass 0.1–0.6 Hz. Fed into a 30-second autocorrelation window, outputting a new breath rate every 5 seconds.
+* **Respiratory Rate:** Accel Z-axis LPF -> decimated 48:1 (to 10 Hz) -> bandpass 0.1–0.6 Hz. Fed into a 30-second autocorrelation window, outputting a new respiratory rate every 5 seconds.
 
 HRV metrics (RMSSD, SDNN, pNN50, SD1, SD2) are calculated independently for both the ECG and SCG streams over a 60 second sliding window based on Task Force standards [3,4]. ECG and SCG reports are synchronized as the ECG trigger drives both computations simultaneously. Data is streamed to a host via a USB Virtual COM Port with CRC-32 integrity.
 
@@ -31,7 +31,7 @@ HRV metrics (RMSSD, SDNN, pNN50, SD1, SD2) are calculated independently for both
 - [x] Real-time respiratory rate from chest-wall accelerometry.
 - [x] On-device HRV metrics calculation.
 - [x] USB CDC telemetry via TinyUSB.
-- [x] On-device SCG vs ECG HRV validation.
+- [x] SCG vs ECG HRV validation.
 - [ ] Improve SCG RMSSD agreement
 - [ ] Multi-axis respiratory fusion (PCA + gyro).
 
